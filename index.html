@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python 101 — The Cheat Sheet Course</title>
+  <meta name="description" content="A beginner-friendly Python cheat sheet course: every built-in, library, and trick you need before a coding test — plus file handling and web scraping." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream: '#FFFBF5',
+            ink: '#2E2A47',
+            lavender: { 50: '#F8F6FF', 100: '#F1EDFF', 200: '#E3DBFF', 300: '#C9BBFF', 500: '#8B7CF6', 700: '#5B4BC4' },
+            mint:     { 50: '#F3FCF8', 100: '#E6F8F0', 300: '#A8E6CF', 700: '#2F8F6B' },
+            peach:    { 50: '#FFF8F3', 100: '#FFF0E8', 300: '#FFC8A8', 700: '#C2622D' },
+            sky2:     { 50: '#F5FAFF', 100: '#EAF4FF', 300: '#B5D8FF', 700: '#2F6DB5' },
+            blush:    { 50: '#FFF6F9', 100: '#FFE8EF', 300: '#FFB8CC', 700: '#B83B66' },
+            butter:   { 100: '#FFF7D6', 300: '#FFE58A', 700: '#8A6A00' },
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
+  <style type="text/tailwindcss">
+    @layer components {
+      .card      { @apply bg-white/85 backdrop-blur rounded-3xl border border-lavender-100 shadow-[0_10px_40px_-12px_rgba(139,124,246,0.18)] p-5 sm:p-8; }
+      .sec-num   { @apply inline-flex items-center justify-center w-10 h-10 shrink-0 rounded-2xl bg-lavender-100 text-lavender-700 font-bold text-sm; }
+      .sec-title { @apply text-2xl sm:text-3xl font-extrabold tracking-tight text-ink; }
+      .prose-p   { @apply text-slate-600 leading-relaxed mt-4; }
+      .h3        { @apply text-lg font-bold text-ink mt-8 mb-2; }
+      .ic        { @apply font-mono text-[0.85em] bg-lavender-50 text-lavender-700 px-1.5 py-0.5 rounded-md border border-lavender-100; }
+      .analogy   { @apply mt-5 rounded-2xl bg-peach-50 border border-peach-100 p-4 text-slate-700 text-sm leading-relaxed; }
+      .tip       { @apply mt-5 rounded-2xl bg-mint-50 border border-mint-100 p-4 text-slate-700 text-sm leading-relaxed; }
+      .warn      { @apply mt-5 rounded-2xl bg-blush-50 border border-blush-100 p-4 text-slate-700 text-sm leading-relaxed; }
+      .label     { @apply font-bold mr-1; }
+      .code      { @apply relative mt-4 rounded-2xl border border-lavender-100 bg-lavender-50 overflow-hidden; }
+      .code pre  { @apply overflow-x-auto p-4 pr-16 text-[13px] leading-relaxed font-mono; }
+      .code pre code.hljs { @apply bg-transparent p-0; }
+      .tbl       { @apply w-full text-sm text-left mt-4; }
+      .tbl th    { @apply bg-lavender-50 text-ink font-semibold px-3 py-2 border-b border-lavender-100; }
+      .tbl td    { @apply px-3 py-2 border-b border-slate-100 text-slate-600 align-top; }
+      .tbl-wrap  { @apply overflow-x-auto rounded-2xl border border-lavender-100 mt-4; }
+      .diagram   { @apply mt-5 rounded-2xl border border-dashed border-lavender-300 bg-white p-5 overflow-x-auto; }
+      .cell      { @apply w-12 h-12 flex items-center justify-center rounded-xl font-mono font-semibold; }
+      .toc-link  { @apply block rounded-xl px-3 py-1.5 text-sm text-slate-600 hover:bg-lavender-50 hover:text-lavender-700 transition; }
+      .toc-link.active { @apply bg-lavender-100 text-lavender-700 font-semibold; }
+    }
+  </style>
+</head>
+
+<body class="bg-cream font-sans text-ink antialiased selection:bg-lavender-200">
+
+  <!-- Reading progress -->
+  <div id="progress" class="fixed top-0 left-0 h-1 w-0 z-[60] bg-gradient-to-r from-lavender-300 via-blush-300 to-peach-300 transition-[width] duration-150"></div>
+
+  <!-- Soft background blobs -->
+  <div aria-hidden="true" class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+    <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-lavender-200/40 blur-3xl"></div>
+    <div class="absolute top-1/3 -right-40 w-[28rem] h-[28rem] rounded-full bg-mint-100/70 blur-3xl"></div>
+    <div class="absolute bottom-0 left-1/4 w-96 h-96 rounded-full bg-peach-100/70 blur-3xl"></div>
+  </div>
+
+  <!-- Mobile top bar -->
+  <header class="lg:hidden sticky top-0 z-40 bg-cream/85 backdrop-blur border-b border-lavender-100">
+    <div class="flex items-center justify-between px-4 h-14">
+      <a href="#top" class="flex items-center gap-2 font-extrabold">
+        <span class="w-8 h-8 rounded-xl bg-gradient-to-br from-lavender-300 to-blush-300 flex items-center justify-center text-white text-sm">Py</span>
+        Python 101
+      </a>
+      <button id="menu-open" aria-label="Open menu" aria-controls="drawer" aria-expanded="false"
+        class="w-10 h-10 rounded-xl bg-white border border-lavender-100 flex items-center justify-center shadow-sm">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile drawer -->
+  <div id="overlay" class="lg:hidden fixed inset-0 z-40 bg-ink/30 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity"></div>
+  <aside id="drawer" aria-label="Course contents"
+    class="lg:hidden fixed inset-y-0 left-0 z-50 w-[85%] max-w-xs bg-cream shadow-2xl -translate-x-full transition-transform duration-300 flex flex-col">
+    <div class="flex items-center justify-between px-5 h-14 border-b border-lavender-100">
+      <span class="font-extrabold">Contents</span>
+      <button id="menu-close" aria-label="Close menu" class="w-9 h-9 rounded-xl hover:bg-lavender-50 flex items-center justify-center">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="p-4"><input type="search" placeholder="Filter topics…" data-toc-filter class="w-full rounded-xl border border-lavender-100 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-lavender-200" /></div>
+    <nav data-toc class="flex-1 overflow-y-auto px-3 pb-8"></nav>
+  </aside>
+
+  <div id="top" class="max-w-7xl mx-auto lg:grid lg:grid-cols-[18rem_1fr] lg:gap-10 px-4 sm:px-6 lg:px-8">
+
+    <!-- Desktop sidebar -->
+    <aside class="hidden lg:block">
+      <div class="sticky top-0 h-screen py-8 flex flex-col">
+        <a href="#top" class="flex items-center gap-3 px-3 mb-6">
+          <span class="w-10 h-10 rounded-2xl bg-gradient-to-br from-lavender-300 to-blush-300 flex items-center justify-center text-white font-bold">Py</span>
+          <span>
+            <span class="block font-extrabold leading-tight">Python 101</span>
+            <span class="block text-xs text-slate-500">The Cheat Sheet Course</span>
+          </span>
+        </a>
+        <input type="search" placeholder="Filter topics…" data-toc-filter class="mx-3 mb-4 rounded-xl border border-lavender-100 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-lavender-200" />
+        <nav data-toc class="flex-1 overflow-y-auto pr-2 pb-8"></nav>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="py-8 lg:py-12 space-y-8 min-w-0">
+
+      <!-- Hero -->
+      <div class="card relative overflow-hidden">
+        <div class="absolute -right-10 -top-10 w-48 h-48 rounded-full bg-gradient-to-br from-mint-100 to-sky2-100"></div>
+        <div class="relative">
+          <span class="inline-block rounded-full bg-mint-100 text-mint-700 text-xs font-bold px-3 py-1">Beginner friendly · Test-day ready</span>
+          <h1 class="mt-4 text-4xl sm:text-5xl font-extrabold tracking-tight">Python 101 <span class="bg-gradient-to-r from-lavender-500 to-blush-700 bg-clip-text text-transparent">Cheat Sheet</span></h1>
+          <p class="mt-4 text-lg text-slate-600 max-w-2xl leading-relaxed">
+            You already have an idea for how to solve the problem. This course gives you the <strong>Python tools to write it down</strong> —
+            fast input, handy built-ins, the standard-library helpers that save you writing code, plus reading and writing files and scraping websites.
+          </p>
+          <div class="mt-6 flex flex-wrap gap-2 text-xs font-semibold">
+            <span class="rounded-full bg-lavender-100 text-lavender-700 px-3 py-1">27 sections</span>
+            <span class="rounded-full bg-peach-100 text-peach-700 px-3 py-1">Copy-paste snippets</span>
+            <span class="rounded-full bg-sky2-100 text-sky2-700 px-3 py-1">Visual diagrams</span>
+            <span class="rounded-full bg-blush-100 text-blush-700 px-3 py-1">Python 3.10+</span>
+          </div>
+          <p class="mt-6 text-sm text-slate-500">How to read the coloured boxes:
+            <span class="inline-block rounded-lg bg-peach-50 border border-peach-100 px-2 py-0.5 ml-1">🍑 Analogy</span>
+            <span class="inline-block rounded-lg bg-mint-50 border border-mint-100 px-2 py-0.5 ml-1">🌿 Tip</span>
+            <span class="inline-block rounded-lg bg-blush-50 border border-blush-100 px-2 py-0.5 ml-1">🌸 Watch out</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- ===================== GETTING STARTED ===================== -->
+
+      <section id="prerequisites" data-group="Getting Started" data-title="Prerequisites" class="card scroll-mt-20">
+        <div class="flex items-center gap-3"><span class="sec-num">01</span><h2 class="sec-title">Prerequisites</h2></div>
+        <p class="prose-p">You don't need to be a programmer yet. You need a few things on your computer and a couple of ideas in your head.</p>
+        <div class="grid sm:grid-cols-2 gap-4 mt-6">
+          <div class="rounded-2xl bg-lavender-50 border border-lavender-100 p-4">
+            <p class="font-bold">🧰 Tools</p>
+            <ul class="mt-2 text-sm text-slate-600 space-y-1 list-disc pl-5">
+              <li><strong>Python 3.10 or newer</strong> from <a class="text-lavender-700 underline" href="https://www.python.org/downloads/" target="_blank" rel="noopener">python.org</a></li>
+              <li>A code editor — <strong>VS Code</strong> with the Python extension is a good free choice</li>
+              <li>A terminal (Terminal on macOS/Linux, PowerShell on Windows)</li>
+              <li>For the scraping section: <span class="ic">pip install requests beautifulsoup4</span></li>
+            </ul>
+          </div>
+          <div class="rounded-2xl bg-mint-50 border border-mint-100 p-4">
+            <p class="font-bold">🧠 Ideas</p>
+            <ul class="mt-2 text-sm text-slate-600 space-y-1 list-disc pl-5">
+              <li>A <strong>program</strong> is a list of instructions run top to bottom.</li>
+              <li>A <strong>variable</strong> is a name for a value.</li>
+              <li>A <strong>file</strong> lives in a <strong>folder</strong>, and has a <strong>path</strong> like <span class="ic">docs/notes.txt</span>.</li>
+              <li>Basic maths: +, −, ×, ÷ and remainders.</li>
+            </ul>
+          </div>
+        </div>
+        <p class="h3">Check your setup</p>
+        <div class="code" data-norun><pre><code class="language-bash">python3 --version      # Windows: py --version
+python3                # opens the interactive "REPL"; type exit() to leave
+python3 solution.py    # runs a file
+python3 solution.py &lt; input.txt   # feeds input.txt as if you typed it</code></pre></div>
+        <div class="tip"><span class="label">🌿 Tip:</span> The <span class="ic">&lt; input.txt</span> trick is how you test contest solutions: paste the sample input into a file and run against it again and again.</div>
+      </section>
+
+      <section id="setup" data-group="Getting Started" data-title="Your First Program" class="card scroll-mt-20">
+        <div class="flex items-center gap-3"><span class="sec-num">02</span><h2 class="sec-title">Your First Program</h2></div>
+        <p class="prose-p">Create a file called <span class="ic">hello.py</span>, paste this in, and run <span class="ic">python3 hello.py</span>.</p>
+        <div class="code"><pre><code class="language-python"># Lines starting with # are comments: Python ignores them.
+name = "Ada"
+print("Hello,", name)        # Hello, Ada
+print(f"{name} has {len(name)} letters")   # Ada has 3 letters</code></pre></div>
+        <p class="h3">Indentation is grammar</p>
+        <p class="prose-p mt-0">Other languages use <span class="ic">{ }</span> to group lines. Python uses <strong>indentation</strong> (4 spaces). A colon <span class="ic">:</span> means “an indented block comes next”.</p>
+        <div class="code"><pre><code class="language-python">for i in range(3):
+    print("inside the loop", i)   # indented: repeats
+print("after the loop")           # not indented: runs once</code></pre></div>
+        <div class="analogy"><span class="label">🍑 Analogy:</span> Indentation is like bullet points in a to-do list. Sub-bullets belong to the bullet above them.</div>
+      </section>
+
+      <!-- ===================== CORE LANGUAGE ===================== -->
+
+      <section id="basics" data-group="Core Language" data-title="Variables, Types &amp; Operators" class="card scroll-mt-20">
+        <div class="flex items-center gap-3"><span class="sec-num">03</span><h2 class="sec-title">Variables, Types &amp; Operators</h2></div>
+        <p class="prose-p">A variable is a <strong>name tag</strong> stuck onto a value. The value has a <strong>type</strong>: whole number, decimal number, text, true/false, or “nothing”.</p>
+        <div class="diagram">
+          <p class="text-xs font-semibold text-slate-500 mb-3">DIAGRAM · Names point at values</p>
+          <div class="flex flex-wrap items-center gap-3 font-mono text-sm">
+            <span class="rounded-lg bg-lavender-100 px-3 py-1.5">a</span><span>──▶</span>
+            <span class="rounded-xl border-2 border-mint-300 bg-mint-50 px-4 py-2">[1, 2, 3]</span><span>◀──</span>
+            <span class="rounded-lg bg-lavender-100 px-3 py-1.5">b</span>
+          </div>
+          <p class="text-xs text-slate-500 mt-3"><span class="ic">b = a</span> does <em>not</em> copy the list. Both tags now point at the same list, so changing it through <span class="ic">b</span> also changes what <span class="ic">a</span> sees.</p>
+        </div>
+        <div class="code"><pre><code class="language-python">age = 21              # int   (whole number, any size)
+price = 9.99          # float (decimal number)
+name = "Ada"          # str   (text)
+is_ready = True       # bool  (True / False)
+nothing = None        # NoneType ("no value yet")
+
+print(type(age), type(price), type(name))
+
+# Convert between types
+int("42"), float("3.5"), str(10), bool(0), int(3.9)   # 42 3.5 '10' False 3
+
+# Several assignments at once, and the famous swap
+x, y = 1, 2
+x, y = y, x           # x=2, y=1, no temp variable needed
+a = b = 0             # both start at 0</code></pre></div>
+        <p class="h3">Arithmetic</p>
+        <div class="tbl-wrap"><table class="tbl">
+          <tr><th>Operator</th><th>Meaning</th><th>Example</th><th>Result</th></tr>
+          <tr><td class="font-mono">+ - *</td><td>add, subtract, multiply</td><td class="font-mono">7 * 3</td><td class="font-mono">21</td></tr>
+          <tr><td class="font-mono">/</td><td>divide (always gives a float)</td><td class="font-mono">7 / 2</td><td class="font-mono">3.5</td></tr>
+          <tr><td class="font-mono">//</td><td>floor divide (round down)</td><td class="font-mono">7 // 2</td><td class="font-mono">3</td></tr>
+          <tr><td class="font-mono">%</td><td>remainder (modulo)</td><td class="font-mono">7 % 2</td><td class="font-mono">1</td></tr>
+          <tr><td class="font-mono">**</td><td>power</td><td class="font-mono">2 ** 10</td><td class="font-mono">1024</td></tr>
+          <tr><td class="font-mono">divmod</td><td>quotient and remainder together</td><td class="font-mono">divmod(7, 2)</td><td class="font-mono">(3, 1)</td></tr>
+        </table></div>
+        <div class="code"><pre><code class="language-python">count = 0
+count += 1            # same as count = count + 1  (also -=, *=, //=, %=)
+
+# Comparisons give True/False, and you can chain them
+print(1 &lt; 5 &lt;= 5)      # True  (means 1 &lt; 5 and 5 &lt;= 5)
+print(3 == 3.0, 3 != 4)  # True True
+
+# Logic words
+print(True and False, True or False, not True)   # False True False</code></pre></div>
+        <div class="warn"><span class="label">🌸 Watch out:</span> <span class="ic">//</span> and <span class="ic">%</span> round towards <em>minus infinity</em>: <span class="ic">-7 // 2</span> is <span class="ic">-4</span> and <span class="ic">-7 % 2</span> is <span class="ic">1</span>. C++/Java give −3 and −1. Use <span class="ic">int(-7 / 2)</span> if you want truncation towards zero.</div>
+      </section>
+
+      <section id="io" data-group="Core Language" data-title="Input &amp; Output (Fast I/O)" class="card scroll-mt-20">
+        <div class="flex items-center gap-3"><span class="sec-num">04</span><h2 class="sec-title">Input &amp; Output (Fast I/O)</h2></div>
+        <p class="prose-p">Every coding test starts by reading numbers. <span class="ic">input()</span> reads one line as <em>text</em>; you then cut it up and convert it.</p>
+        <div class="analogy"><span class="label">🍑 Analogy:</span> <span class="ic">input()</span> hands you a whole sentence. <span class="ic">.split()</span> cuts it into words. <span class="ic">map(int, …)</span> turns each word into a number.</div>
+        <div class="code" data-norun><pre><code class="language-python">n = int(input())                        # "5"         -> 5
+a, b = map(int, input().split())        # "3 7"       -> a=3, b=7
+nums = list(map(int, input().split()))  # "1 2 3 4"   -> [1, 2, 3, 4]
+word = input().strip()                  # strip removes spaces/newline at the ends
+grid = [input() for _ in range(n)]      # n lines of text
+matrix = [list(map(int, input().split())) for _ in range(n)]  # n rows of numbers</code></pre></div>
+        <p class="h3">Faster input for big tests</p>
+        <p class="prose-p mt-0"><span class="ic">input()</span> is slow when there are 10⁵+ lines. Swap it for <span class="ic">sys.stdin.readline</span>, or read everything in one go.</p>
+        <div class="code" data-norun><pre><code class="language-python">import sys
+input = sys.stdin.readline          # drop-in replacement (keeps the trailing "\n"!)
+
+n = int(input())
+s = input().strip()                 # .strip() matters for strings now
+
+# Or: read ALL tokens at once and walk through them
+data = sys.stdin.buffer.read().split()
+n = int(data[0])
+nums = list(map(int, data[1:1 + n]))</code></pre></div>
+        <p class="h3">Printing</p>
+        <div class="code"><pre><code class="language-python">nums = [1, 2, 3]
+print(1, 2, 3)                   # 1 2 3
+print(1, 2, 3, sep=",")          # 1,2,3
+print("no newline", end="")      # stays on the same line
+print()
+print(*nums)                     # 1 2 3   (* unpacks the list)
+print(" ".join(map(str, nums)))  # 1 2 3   (join needs strings)
+print("\n".join(map(str, nums))) # one per line
+
+# Fast output: collect lines, print once
+out = []
+for i in range(3):
+    out.append(str(i * i))
+print("\n".join(out))
+
+# f-strings: the easiest formatting
+pi = 3.14159265
+print(f"{pi:.2f}")       # 3.14     (2 decimal places)
+print(f"{42:5d}|")       #    42|   (width 5)
+print(f"{42:05d}")       # 00042    (zero padded)
+print(f"{1234567:,}")    # 1,234,567
+print(f"{'hi':&gt;6}|{'hi':&lt;6}|{'hi':^6}|")   # right / left / centre
+print(f"{255:b} {255:x} {255:o}")             # 11111111 ff 377</code></pre></div>
+      </section>
+
+      <section id="strings" data-group="Core Language" data-title="Strings" class="card scroll-mt-20">
+        <div class="flex items-center gap-3"><span class="sec-num">05</span><h2 class="sec-title">Strings</h2></div>
+        <p class="prose-p">A string is a row of characters. Strings are <strong>immutable</strong>: you can't change a letter in place, you build a new string instead.</p>
+        <div class="diagram">
+          <p class="text-xs font-semibold text-slate-500 mb-3">DIAGRAM · Indexing <span class="ic">s = "PYTHON"</span></p>
+          <div class="flex gap-2">
+            <div class="text-center"><div class="cell bg-lavender-100 text-lavender-700">P</div><div class="text-xs mt-1 text-mint-700 font-mono">0</div><div class="text-xs text-blush-700 font-mono">-6</div></div>
+            <div class="text-center"><div class="cell bg-mint-100 text-mint-700">Y</div><div class="text-xs mt-1 text-mint-700 font-mono">1</div><div class="text-xs text-blush-700 font-mono">-5</div></div>
+            <div class="text-center"><div class="cell bg-peach-100 text-peach-700">T</div><div class="text-xs mt-1 text-mint-700 font-mono">2</div><div class="text-xs text-blush-700 font-mono">-4</div></div>
+            <div class="text-center"><div class="cell bg-sky2-100 text-sky2-700">H</div><div class="text-xs mt-1 text-mint-700 font-mono">3</div><div class="text-xs text-blush-700 font-mono">-3</div></div>
+            <div class="text-center"><div class="cell bg-blush-100 text-blush-700">O</div><div class="text-xs mt-1 text-mint-700 font-mono">4</div><div class="text-xs text-blush-700 font-mono">-2</div></div>
+            <div class="text-center"><div class="cell bg-butter-100 text-butter-700">N</div><div class="text-xs mt-1 text-mint-700 font-mono">5</div><div class="text-xs text-blush-700 font-mono">-1</div></div>
+          </div>
+          <p class="text-xs text-slate-500 mt-3">Green numbers count from the front (starting at 0). Pink numbers count from the back. <span class="ic">s[1:4]</span> means “from index 1 up to, but <em>not</em> including, 4” → <span class="ic">"YTH"</span>.</p>
+        </div>
+        <div class="code"><pre><code class="language-python">s = "PYTHON"
+s[0], s[-1]        # 'P', 'N'
+s[1:4]             # 'YTH'     start:stop  (stop is excluded)
+s[:2], s[2:]       # 'PY', 'THON'
+s[::2]             # 'PTO'     every 2nd char
+s[::-1]            # 'NOHTYP'  reversed!
+len(s)             # 6
+"TH" in s          # True
+
+t = "  Hello, World  "
+t.strip()                    # 'Hello, World'
+t.lower(), t.upper()         # lower / UPPER case
+"a,b,c".split(",")           # ['a', 'b', 'c']
+"-".join(["a", "b", "c"])    # 'a-b-c'
+"banana".count("a")          # 3
+"banana".find("n")           # 2   (-1 if missing)
+"banana".index("n")          # 2   (error if missing)
+"banana".replace("a", "o")   # 'bonono'
+"hello".startswith("he")     # True
+"abc123".isalnum(), "123".isdigit(), "abc".isalpha()   # True True True
+"hello world".title()        # 'Hello World'
+
+# Characters &lt;-&gt; numbers (ASCII / Unicode code points)
+ord("a"), chr(97)            # 97, 'a'
+ord("c") - ord("a")          # 2   -> handy for "letter index" problems
+
+# Changing a string = rebuild it via a list
+chars = list("hello")
+chars[0] = "j"
+print("".join(chars))        # jello</code></pre></div>
+        <div class="code"><pre><code class="language-python">import string
+string.ascii_lowercase   # 'abcdefghijklmnopqrstuvwxyz'
+string.ascii_uppercase   # 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+string.digits            # '0123456789'
+
+# Repeat and multi-line
+print("ab" * 3)          # ababab
+poem = """line one
+line two"""</code></pre></div>
+        <div class="warn"><span class="label">🌸 Watch out:</span> building a big string with <span class="ic">s += piece</span> inside a loop can be slow. Append pieces to a list and <span class="ic">"".join(list)</span> at the end.</div>
+      </section>
+
+      <section id="lists" data-group="Core Language" data-title="Lists" class="card scroll-mt-20">
+        <div class="flex items-center gap-3"><span class="sec-num">06</span><h2 class="sec-title">Lists</h2></div>
+        <p class="prose-p">A list is an ordered, changeable row of items — Python's “array”. Indexing and slicing work exactly like strings.</p>
+        <div class="analogy"><span class="label">🍑 Analogy:</span> A list is a train. Each carriage has a number (its index), and you can add carriages at the end, uncouple some, or reorder them.</div>
+        <div class="code"><pre><code class="language-python">nums = [5, 3, 8]
+nums.append(1)        # [5, 3, 8, 1]         add to end      O(1)
+nums.extend([7, 7])   # [5, 3, 8, 1, 7, 7]   add many
+nums.insert(0, 9)     # [9, 5, 3, 8, 1, 7, 7] insert at index   O(n)
+nums.pop()            # removes &amp; returns last item   O(1)
+nums.pop(0)           # removes first item             O(n)
+nums.remove(8)        # removes first 8 found          O(n)
+nums.index(3)         # position of first 3
+nums.count(7)         # how many 7s
+nums.sort()           # sorts IN PLACE, returns None
+nums.reverse()        # reverses IN PLACE
+print(nums)
+
+new = sorted(nums)    # returns a NEW sorted list
+copy = nums[:]        # shallow copy (also nums.copy() or list(nums))
+zeros = [0] * 5       # [0, 0, 0, 0, 0]
+last_two = nums[-2:]
+del nums[0]           # delete by index
+nums[1:3] = [100]     # replace a slice</code></pre></div>
+        <p class="h3">List comprehensions — loops in one line</p>
+        <div class="code"><pre><code class="language-python">squares = [x * x for x in range(6)]            # [0, 1, 4, 9, 16, 25]
+evens   = [x for x in range(10) if x % 2 == 0] # [0, 2, 4, 6, 8]
+labels  = ["even" if x % 2 == 0 else "odd" for x in range(4)]
+pairs   = [(i, j) for i in range(2) for j in range(2)]   # nested loops
+flat    = [v for row in [[1, 2], [3, 4]] for v in row]    # [1, 2, 3, 4]</code></pre></div>
+        <p class="h3">2D grids (and the #1 beginner trap)</p>
+        <div class="diagram">
+          <p class="text-xs font-semibold text-slate-500 mb-3">DIAGRAM · <span class="ic">[[0]*3]*3</span> vs a comprehension</p>
+          <div class="grid sm:grid-cols-2 gap-6 text-sm">
+            <div>
+              <p class="font-semibold text-blush-700 mb-2">❌ <span class="font-mono">[[0]*3]*3</span></p>
+              <div class="flex items-center gap-3 font-mono">
+                <div class="space-y-1"><div class="rounded bg-lavender-100 px-2">row 0</div><div class="rounded bg-lavender-100 px-2">row 1</div><div class="rounded bg-lavender-100 px-2">row 2</div></div>
+                <div class="text-slate-400 leading-tight">─┐<br/>─┼▶<br/>─┘</div>
+                <div class="rounded-lg border-2 border-blush-300 bg-blush-50 px-3 py-2">[0, 0, 0]</div>
+              </div>
+              <p class="text-xs text-slate-500 mt-2">Three tags, <strong>one</strong> list. Change one row and every row changes.</p>
+            </div>
+            <div>
+              <p class="font-semibold text-mint-700 mb-2">✅ <span class="font-mono">[[0]*3 for _ in range(3)]</span></p>
+              <div class="flex items-center gap-3 font-mono">
+                <div class="space-y-1"><div class="rounded bg-lavender-100 px-2">row 0</div><div class="rounded bg-lavender-100 px-2">row 1</div><div class="rounded bg-lavender-100 px-2">row 2</div></div>
+                <div class="text-slate-400 leading-tight">──▶<br/>──▶<br/>──▶</div>
+                <div class="space-y-1"><div class="rounded border border-mint-300 bg-mint-50 px-2">[0, 0, 0]</div><div class="rounded border border-mint-300 bg-mint-50 px-2">[0, 0, 0]</div><div class="rounded border border-mint-300 bg-mint-50 px-2">[0, 0, 0]</div></div>
+              </div>
+              <p class="text-xs text-slate-500 mt-2">Three separate lists. Rows are independent.</p>
+            </div>
+          </div>
+        </div>
+        <div class="code"><pre><code class="language-python">bad = [[0] * 3] * 3
+bad[0][0] = 1
+print(bad)        # [[1, 0, 0], [1, 0, 0], [1, 0, 0]]  -- surprise!
+
+rows, cols = 3, 4
+grid = [[0] * cols for _ in range(rows)]
+grid[0][0] = 1
+print(grid)       # only the first row changed
+
+# Walk the 4 neighbours of a cell (very common in grid problems)
+r, c = 1, 1
+for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+    nr, nc = r + dr, c + dc
+    if 0 &lt;= nr &lt; rows and 0 &lt;= nc &lt; cols:
+        print("neighbour", nr, nc)
+
+transposed = [list(col) for col in zip(*grid)]   # swap rows and columns</code></pre></div>
+      </section>
+
+      <section id="tuples" data-group="Core Language" data-title="Tuples &amp; Unpacking" class="card scroll-mt-20">
+        <div class="flex items-center gap-3"><span class="sec-num">07</span><h2 class="sec-title">Tuples &amp; Unpacking</h2></div>
+        <p class="prose-p">A tuple is a list you can't change. Because it never changes, it can be used as a dictionary key or stored in a set — perfect for coordinates like <span class="ic">(row, col)</span>.</p>
+        <div class="code"><pre><code class="language-python">point = (3, 4)
+x, y = point                 # unpacking
+single = (5,)                # one-item tuple needs a comma
+
+first, *rest = [1, 2, 3, 4]  # first=1, rest=[2, 3, 4]
+*init, last = [1, 2, 3, 4]   # init=[1, 2, 3], last=4
+a, _, c = (1, 2, 3)          # _ means "I don't care about this one"
+
+# Tuples compare item by item, left to right
+print((1, 5) &lt; (2, 0))       # True
+print((1, 5) &lt; (1, 6))       # True
+
+visited = {(0, 0), (0, 1)}   # set of coordinates
+print((0, 1) in visited)     # True</code></pre></div>
+      </section>
+
+      <section id="dicts" data-group="Core Language" data-title="Dictionaries" class="card scroll-mt-20">
+        <div class="flex items-center gap-3"><span class="sec-num">08</span><h2 class="sec-title">Dictionaries</h2></div>
+        <p class="prose-p">A dictionary maps <strong>keys</strong> to <strong>values</strong>. Looking up a key is instant (O(1)) no matter how big the dict is.</p>
+        <div class="analogy"><span class="label">🍑 Analogy:</span> A real dictionary: you look up the word (key) and read its meaning (value). You never read the whole book to find one word.</div>
+        <div class="code"><pre><code class="language-python">ages = {"ada": 36, "alan": 41}
+ages["grace"] = 85           # add / update
+print(ages["ada"])           # 36  (KeyError if missing!)
+print(ages.get("bob"))       # None (safe)
+print(ages.get("bob", 0))    # 0    (safe with default)
+print("ada" in ages)         # True (checks keys)
+del ages["alan"]
+ages.pop("grace", None)      # remove if present
+
+for name, age in ages.items():
+    print(name, age)
+list(ages.keys()), list(ages.values())
+
+# Counting by hand
+freq = {}
+for ch in "banana":
+    freq[ch] = freq.get(ch, 0) + 1
+print(freq)                  # {'b': 1, 'a': 3, 'n': 2}
+
+# Dict comprehension
+sq = {x: x * x for x in range(4)}      # {0: 0, 1: 1, 2: 4, 3: 9}
+inverted = {v: k for k, v in sq.items()}
+
+# Sort a dict by value (highest first)
+top = sorted(freq.items(), key=lambda kv: kv[1], reverse=True)
+print(top)                   # [('a', 3), ('n', 2), ('b', 1)]
+
+# Merge two dicts
+merged = {"a": 1} | {"b": 2}           # Python 3.9+</code></pre></div>
+        <div class="tip"><span class="label">🌿 Tip:</span> Since Python 3.7, dicts remember insertion order. Keys must be immutable: numbers, strings, tuples — not lists.</div>
+      </section>
+
+      <section id="sets" data-group="Core Language" data-title="Sets" class="card scroll-mt-20">
+        <div class="flex items-center gap-3"><span class="sec-num">09</span><h2 class="sec-title">Sets</h2></div>
+        <p class="prose-p">A set is a bag of <strong>unique</strong> items with instant “is it in here?” checks. Use it to remove duplicates or track what you've already seen.</p>
+        <div class="diagram">
+          <p class="text-xs font-semibold text-slate-500 mb-3">DIAGRAM · Set operations on A = {1,2,3} and B = {2,3,4}</p>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center text-sm font-mono">
+            <div class="rounded-xl bg-lavender-50 border border-lavender-100 p-3"><div class="font-bold">A | B</div><div class="text-xs text-slate-500">union</div><div class="mt-1">{1,2,3,4}</div></div>
+            <div class="rounded-xl bg-mint-50 border border-mint-100 p-3"><div class="font-bold">A &amp; B</div><div class="text-xs text-slate-500">intersection</div><div class="mt-1">{2,3}</div></div>
+            <div class="rounded-xl bg-peach-50 border border-peach-100 p-3"><div class="font-bold">A - B</div><div class="text-xs text-slate-500">difference</div><div class="mt-1">{1}</div></div>
+            <div class="rounded-xl bg-sky2-50 border border-sky2-100 p-3"><div class="font-bold">A ^ B</div><div class="text-xs text-slate-500">in exactly one</div><div class="mt-1">{1,4}</div></div>
+          </div>
+        </div>
+        <div class="code"><pre><code class="language-python">seen = set()                 # NOT {} -- that's an empty dict
+seen.add(3)
+seen.update([4, 5])
+seen.discard(99)             # no error if missing (remove() would error)
+print(4 in seen)             # True, in O(1)
+
+unique = set([3, 1, 3, 2, 1])   # {1, 2, 3}
+print(len(unique))              # count distinct values
+
+A, B = {1, 2, 3}, {2, 3, 4}
+print(A | B, A &amp; B, A - B, A ^ B)
+print({1, 2} &lt;= A)              # subset check: True
+
+frozen = frozenset([1, 2])      # immutable set, can be a dict key</code></pre></div>
+        <div class="warn"><span class="label">🌸 Watch out:</span> <span class="ic">x in my_list</span> scans the whole list (slow, O(n)). <span class="ic">x in my_set</span> is instant. If you check membership inside a loop, convert to a set first.</div>
+      </section>
+
+      <section id="control" data-group="Core Language" data-title="Control Flow &amp; Loops" class="card scroll-mt-20">
+        <div class="flex items-center gap-3"><span class="sec-num">10</span><h2 class="sec-title">Control Flow &amp; Loops</h2></div>
+        <div class="code"><pre><code class="language-python">x = 7
+if x &gt; 10:
+    print("big")
+elif x &gt; 5:
+    print("medium")
+else:
+    print("small")
+
+label = "even" if x % 2 == 0 else "odd"   # one-line if (ternary)
+
+for i in range(5):          print(i, end=" ")   # 0 1 2 3 4
+print()
+for i in range(2, 10, 3):   print(i, end=" ")   # 2 5 8
+print()
+for i in range(5, 0, -1):   print(i, end=" ")   # 5 4 3 2 1
+print()
+
+n = 3
+while n &gt; 0:
+    n -= 1
+    if n == 1:
+        continue            # skip to next round
+    print("n is", n)
+
+for v in [1, 3, 5]:
+    if v % 2 == 0:
+        print("found even")
+        break               # leave the loop early
+else:
+    print("no even number") # runs only if the loop did NOT break
+
+# Walrus operator := assigns inside an expression (3.8+)
+data = [1, 2, 3, 4]
+if (n := len(data)) &gt; 3:
+    print(f"long list of {n}")
+
+# match/case (3.10+): a tidy multi-way switch
+cmd = "add"
+match cmd:
+    case "add":
+        print("adding")
+    case "remove" | "delete":
+        print("removing")
+    case _:
+        print("unknown")</code></pre></div>
+        <div class="tip"><span class="label">🌿 Tip:</span> <span class="ic">range(a, b)</span> stops <em>before</em> <span class="ic">b</span>. To loop 1..n inclusive, write <span class="ic">range(1, n + 1)</span>.</div>
+      </section>
+
+      <section id="functions" data-group="Core Language" data-title="Functions, Lambdas &amp; Recursion" class="card scroll-mt-20">
+        <div class="flex items-center gap-3"><span class="sec-num">11</span><h2 class="sec-title">Functions, Lambdas &amp; Recursion</h2></div>
+        <p class="prose-p">A function is a reusable recipe: it takes ingredients (arguments) and gives back a result (<span class="ic">return</span>).</p>
+        <div class="code"><pre><code class="language-python">def area(width, height=1):          # height has a default value
+    """Return the area of a rectangle."""   # docstring
+    return width * height
+
+print(area(3, 4), area(5), area(height=2, width=3))   # 12 5 6
+
+def min_max(nums):
+    return min(nums), max(nums)     # return several values as a tuple
+lo, hi = min_max([4, 1, 9])
+
+def total(*args, **kwargs):         # any number of positional / named args
+    return sum(args) + sum(kwargs.values())
+print(total(1, 2, 3, bonus=10))     # 16
+
+square = lambda x: x * x            # tiny anonymous function
+print(square(5))                    # 25
+
+# Functions inside functions, and changing an outer variable
+def counter():
+    count = 0
+    def inc():
+        nonlocal count
+        count += 1
+        return count
+    return inc
+c = counter(); c(); print(c())      # 2
+
+# Type hints are optional labels -- Python doesn't enforce them
+def greet(name: str) -&gt; str:
+    return "Hi " + name</code></pre></div>
+        <p class="h3">Recursion</p>
+        <p class="prose-p mt-0">A function that calls itself on a smaller version of the problem. It needs a <strong>base case</strong> to stop.</p>
+        <div class="code"><pre><code class="language-python">import sys
+sys.setrecursionlimit(10**6)   # default is ~1000: deep recursion would crash
+
+def factorial(n):
+    if n &lt;= 1:                 # base case
+        return 1
+    return n * factorial(n - 1)
+
+print(factorial(5))            # 120</code></pre></div>
+        <div class="warn"><span class="label">🌸 Watch out:</span> never use a mutable default like <span class="ic">def f(items=[])</span>. The same list is reused on every call. Use <span class="ic">items=None</span> and create the list inside. Very deep recursion (10⁵+ levels) can still crash Python itself; convert it to a loop with your own stack if that happens.</div>
+      </section>
+
+      <!-- ===================== POWER TOOLS ===================== -->
+
+      <section id="builtins" data-group="Power Tools" data-title="Built-in Power Pack" class="card scroll-mt-20">
+        <div class="flex items-center gap-3"><span class="sec-num">12</span><h2 class="sec-title">Built-in Power Pack</h2></div>
+        <p class="prose-p">These need no <span class="ic">import</span>. Knowing them saves you writing loops by hand.</p>
+        <div class="code"><pre><code class="language-python">nums = [4, 1, 7, 3]
+names = ["ann", "bob", "cy"]
+
+for i, v in enumerate(nums):           # index AND value
+    print(i, v)
+for i, v in enumerate(nums, start=1):  # count from 1
+    pass
+
+for name, n in zip(names, nums):       # walk two lists side by side
+    print(name, n)                     # stops at the shorter one
+
+sum(nums), min(nums), max(nums), len(nums)        # 15 1 7 4
+max(names, key=len)                    # 'ann'  (longest; first on ties)
+min(nums, default=0)                   # safe on empty lists
+any(x &gt; 5 for x in nums)               # True  (at least one)
+all(x &gt; 0 for x in nums)               # True  (every one)
+list(map(str, nums))                   # ['4', '1', '7', '3']
+list(filter(lambda x: x % 2, nums))    # [1, 7, 3]  (keep odd)
+list(reversed(nums))                   # [3, 7, 1, 4]
+abs(-5), round(2.675, 2), round(7.5)   # 5 2.67 8
+pow(2, 10), pow(2, 10, 1000)           # 1024 24  (3rd arg = fast modulo)
+divmod(17, 5)                          # (3, 2)
+sorted("hello")                        # ['e', 'h', 'l', 'l', 'o']
+isinstance(5, int)                     # True
+int("ff", 16), int("101", 2)           # 255 5   (parse other bases)
+bin(5), hex(255), oct(8)               # '0b101' '0xff' '0o10'
+float("inf"), -float("inf")            # infinities, great as starting min/max</code></pre></div>
+        <div class="warn"><span class="label">🌸 Watch out:</span> <span class="ic">round()</span> uses “banker's rounding” — <span class="ic">round(2.5)</span> is <span class="ic">2</span>, <span class="ic">round(3.5)</span> is <span class="ic">4</span>. For classic rounding of positives use <span class="ic">int(x + 0.5)</span>.</div>
+      </section>
+
+      <section id="sorting" data-group="Power Tools" data-title="Sorting Like a Pro" class="card scroll-mt-20">
+        <div class="flex items-center gap-3"><span class="sec-num">13</span><h2 class="sec-title">Sorting Like a Pro</h2></div>
+        <p class="prose-p">The <span class="ic">key=</span> argument tells Python <em>what to look at</em> when comparing items. Python's sort is <strong>stable</strong>: equal items keep their original order.</p>
+        <div class="code"><pre><code class="language-python">people = [("ann", 30), ("bob", 25), ("cy", 30)]
+
+sorted(people, key=lambda p: p[1])                 # by age, ascending
+sorted(people, key=lambda p: p[1], reverse=True)   # by age, descending
+sorted(people, key=lambda p: (-p[1], p[0]))        # age desc, then name asc
+sorted(["bb", "a", "ccc"], key=len)                # by length
+sorted(["b", "A", "c"], key=str.lower)             # case-insensitive
+
+from operator import itemgetter
+sorted(people, key=itemgetter(1, 0))               # same as lambda p: (p[1], p[0])
+
+# Custom compare function (when a key is hard to write)
+from functools import cmp_to_key
+def compare(a, b):
+    # return negative if a goes first, positive if b goes first, 0 if tie
+    return -1 if a + b &gt; b + a else 1
+nums = ["3", "30", "34", "5", "9"]
+print("".join(sorted(nums, key=cmp_to_key(compare))))   # 9534330 (largest number)
+
+# Indices that would sort a list
+vals = [30, 10, 20]
+order = sorted(range(len(vals)), key=lambda i: vals[i])  # [1, 2, 0]</code></pre></div>
+        <div class="tip"><span class="label">🌿 Tip:</span> Negating a number in the key (<span class="ic">-p[1]</span>) is the easy way to mix ascending and descending in one sort.</div>
+      </section>
+
+      <section id="collections" data-group="Power Tools" data-title="collections: Counter, defaultdict, deque" class="card scroll-mt-20">
+        <div class="flex items-center gap-3"><span class="sec-num">14</span><h2 class="sec-title">collections</h2></div>
+        <p class="prose-p">Supercharged containers from the standard library. These four come up constantly.</p>
+        <p class="h3">Counter — count things instantly</p>
+        <div class="code"><pre><code class="language-python">from collections import Counter
+c = Counter("mississippi")
+print(c)                     # Counter({'i': 4, 's': 4, 'p': 2, 'm': 1})
+print(c["s"], c["z"])        # 4 0   (missing keys are 0, no error)
+print(c.most_common(2))      # [('i', 4), ('s', 4)]
+print(Counter("listen") == Counter("silent"))   # True -&gt; anagram check
+c.update("ss")               # add more counts
+print(Counter([1, 1, 2]) - Counter([1]))        # Counter({1: 1, 2: 1})</code></pre></div>
+        <p class="h3">defaultdict — dict with an automatic starting value</p>
+        <div class="code"><pre><code class="language-python">from collections import defaultdict
+graph = defaultdict(list)    # missing key -&gt; starts as []
+for a, b in [(1, 2), (1, 3), (2, 3)]:
+    graph[a].append(b)
+    graph[b].append(a)
+print(dict(graph))           # {1: [2, 3], 2: [1, 3], 3: [1, 2]}
+
+counts = defaultdict(int)    # missing key -&gt; starts as 0
+for w in "a b a".split():
+    counts[w] += 1
+
+groups = defaultdict(set)    # missing key -&gt; starts as set()</code></pre></div>
+        <p class="h3">deque — a list that's fast at both ends</p>
+        <div class="diagram">
+          <p class="text-xs font-semibold text-slate-500 mb-3">DIAGRAM · Double-ended queue</p>
+          <div class="flex items-center gap-2 font-mono text-xs sm:text-sm">
+            <div class="text-center text-lavender-700">appendleft<br/>popleft<br/>⇄</div>
+            <div class="flex gap-1"><div class="cell bg-lavender-100">1</div><div class="cell bg-lavender-100">2</div><div class="cell bg-lavender-100">3</div><div class="cell bg-lavender-100">4</div></div>
+            <div class="text-center text-mint-700">append<br/>pop<br/>⇄</div>
+          </div>
+          <p class="text-xs text-slate-500 mt-3">All four operations are O(1). A plain list's <span class="ic">pop(0)</span> is O(n) because every item has to shuffle left. Use a deque for queues (e.g. BFS).</p>
+        </div>
+        <div class="code"><pre><code class="language-python">from collections import deque
+q = deque([1, 2, 3])
+q.append(4); q.appendleft(0)   # deque([0, 1, 2, 3, 4])
+q.popleft(); q.pop()           # removes 0 and 4
+q.rotate(1)                    # deque([3, 1, 2])
+print(q[0], q[-1])             # peek both ends
+
+window = deque(maxlen=3)       # keeps only the last 3 items
+for x in range(6):
+    window.append(x)
+print(list(window))            # [3, 4, 5]
+
+# BFS skeleton
+graph = {0: [1, 2], 1: [3], 2: [3], 3: []}
+dist = {0: 0}
+q = deque([0])
+while q:
+    node = q.popleft()
+    for nxt in graph[node]:
+        if nxt not in dist:
+            dist[nxt] = dist[node] + 1
+            q.append(nxt)
+print(dist)                    # {0: 0, 1: 1, 2: 1, 3: 2}</code></pre></div>
+        <p class="h3">namedtuple — tuples with field names</p>
+        <div class="code"><pre><code class="language-python">from collections import namedtuple
+Point = namedtuple("Point", ["x", "y"])
+p = Point(3, 4)
+print(p.x, p.y, p)             # 3 4 Point(x=3, y=4)</code></pre></div>
+      </section>
+
+      <section id="heapq" data-group="Power Tools" data-title="heapq: Priority Queues" class="card scroll-mt-20">
+        <div class="flex items-center gap-3"><span class="sec-num">15</span><h2 class="sec-title">heapq: Priority Queues</h2></div>
+        <p class="prose-p">A heap always gives you the <strong>smallest</strong> item fast, even while you keep adding new ones. It's stored in a normal list.</p>
+        <div class="analogy"><span class="label">🍑 Analogy:</span> A hospital waiting room: whoever is most urgent (smallest number) is seen next, no matter when they arrived.</div>
+        <div class="diagram">
+          <p class="text-xs font-semibold text-slate-500 mb-3">DIAGRAM · The list <span class="ic">[1, 3, 2, 7, 4]</span> as a min-heap tree</p>
+          <div class="flex flex-col items-center gap-2 font-mono text-sm">
+            <div class="cell bg-mint-100 text-mint-700 ring-2 ring-mint-300">1</div>
+            <div class="flex gap-16"><div class="cell bg-lavender-100">3</div><div class="cell bg-lavender-100">2</div></div>
+            <div class="flex gap-4 -ml-20"><div class="cell bg-peach-100">7</div><div class="cell bg-peach-100">4</div></div>
+          </div>
+          <p class="text-xs text-slate-500 mt-3">Every parent is ≤ its children, so the smallest is always at index 0. Children of index <span class="ic">i</span> live at <span class="ic">2i+1</span> and <span class="ic">2i+2</span>. Push and pop are O(log n).</p>
+        </div>
+        <div class="code"><pre><code class="language-python">import heapq
+h = []
+heapq.heappush(h, 5)
+heapq.heappush(h, 1)
+heapq.heappush(h, 3)
+print(h[0])                  # 1   peek smallest, O(1)
+print(heapq.heappop(h))      # 1   remove smallest, O(log n)
+
+nums = [5, 7, 1, 3]
+heapq.heapify(nums)          # turn a list into a heap in O(n)
+
+# Max-heap trick: store negatives
+mx = []
+for x in [5, 1, 9]:
+    heapq.heappush(mx, -x)
+print(-heapq.heappop(mx))    # 9
+
+# Tuples: sorted by first item, then second...
+tasks = []
+heapq.heappush(tasks, (2, "write"))
+heapq.heappush(tasks, (1, "read"))
+print(heapq.heappop(tasks))  # (1, 'read')
+
+print(heapq.nlargest(2, [4, 1, 9, 7]))    # [9, 7]
+print(heapq.nsmallest(2, [4, 1, 9, 7]))   # [1, 4]</code></pre></div>
+      </section>
+
+      <section id="bisect" data-group="Power Tools" data-title="bisect: Binary Search" class="card scroll-mt-20">
+        <div class="flex items-center gap-3"><span class="sec-num">16</span><h2 class="sec-title">bisect: Binary Search</h2></div>
+        <p class="prose-p">On a <strong>sorted</strong> list, <span class="ic">bisect</span> finds where a value would go in O(log n) — like opening a phone book in the middle instead of reading every page.</p>
+        <div class="diagram">
+          <p class="text-xs font-semibold text-slate-500 mb-3">DIAGRAM · Where does 3 go in <span class="ic">[1, 3, 3, 5]</span>?</p>
+          <div class="flex items-end gap-1 font-mono text-sm">
+            <div class="text-center"><div class="cell bg-lavender-100">1</div><div class="text-xs mt-1">0</div></div>
+            <div class="text-blush-700 text-xs font-bold self-start">▼left=1</div>
+            <div class="text-center"><div class="cell bg-mint-100">3</div><div class="text-xs mt-1">1</div></div>
+            <div class="text-center"><div class="cell bg-mint-100">3</div><div class="text-xs mt-1">2</div></div>
+            <div class="text-sky2-700 text-xs font-bold self-start">▼right=3</div>
+            <div class="text-center"><div class="cell bg-lavender-100">5</div><div class="text-xs mt-1">3</div></div>
+          </div>
+          <p class="text-xs text-slate-500 mt-3"><span class="ic">bisect_left</span> = before existing 3s; <span class="ic">bisect_right</span> = after them. Their difference is how many 3s there are.</p>
+        </div>
+        <div class="code"><pre><code class="language-python">from bisect import bisect_left, bisect_right, insort
+a = [1, 3, 3, 5]
+print(bisect_left(a, 3), bisect_right(a, 3))   # 1 3
+print(bisect_right(a, 3) - bisect_left(a, 3))  # 2  (count of 3s)
+print(bisect_left(a, 4))       # 3  -&gt; first index with value &gt;= 4
+print(bisect_right(a, 4) - 1)  # 2  -&gt; last index with value &lt;= 4
+
+i = bisect_left(a, 5)
+found = i &lt; len(a) and a[i] == 5   # "is 5 in the list?" in O(log n)
+
+insort(a, 4)                   # insert keeping it sorted
+print(a)                       # [1, 3, 3, 4, 5]
+
+# Binary search on the answer with a key (Python 3.10+)
+words = ["a", "bb", "ccc", "dddd"]
+print(bisect_left(words, 3, key=len))   # 2 -&gt; first word with len &gt;= 3</code></pre></div>
+      </section>
+
+      <section id="itertools" data-group="Power Tools" data-title="itertools: Combinatorics" class="card scroll-mt-20">
+        <div class="flex items-center gap-3"><span class="sec-num">17</span><h2 class="sec-title">itertools: Combinatorics</h2></div>
+        <p class="prose-p">Brute-force helpers. Instead of writing nested loops to try every arrangement, ask <span class="ic">itertools</span>.</p>
+        <div class="code"><pre><code class="language-python">from itertools import (permutations, combinations, combinations_with_replacement,
+                       product, accumulate, groupby, chain, pairwise, count, islice)
+
+list(permutations([1, 2, 3]))      # all 6 orderings
+list(permutations("abc", 2))       # ordered pairs: ('a','b'), ('a','c'), ...
+list(combinations([1, 2, 3], 2))   # [(1, 2), (1, 3), (2, 3)]  order doesn't matter
+list(combinations_with_replacement([1, 2], 2))   # [(1, 1), (1, 2), (2, 2)]
+list(product([0, 1], repeat=3))    # all 8 bit patterns of length 3
+list(product("ab", [1, 2]))        # [('a', 1), ('a', 2), ('b', 1), ('b', 2)]
+
+list(accumulate([1, 2, 3, 4]))             # [1, 3, 6, 10]  prefix sums
+list(accumulate([1, 2, 3, 4], initial=0))  # [0, 1, 3, 6, 10]
+list(accumulate([3, 1, 4], max))           # [3, 3, 4]  running max
+
+# groupby groups CONSECUTIVE equal items -&gt; run-length encoding
+print([(k, len(list(g))) for k, g in groupby("aaabbc")])   # [('a', 3), ('b', 2), ('c', 1)]
+
+list(chain([1, 2], [3], [4, 5]))   # [1, 2, 3, 4, 5]  glue iterables
+list(pairwise([1, 2, 3, 4]))       # [(1, 2), (2, 3), (3, 4)]  (3.10+)
+list(islice(count(10, 5), 3))      # [10, 15, 20]  first 3 of an endless counter</code></pre></div>
+        <p class="h3">Prefix sums — range totals in O(1)</p>
+        <div class="code"><pre><code class="language-python">from itertools import accumulate
+a = [3, 1, 4, 1, 5]
+pre = list(accumulate(a, initial=0))   # [0, 3, 4, 8, 9, 14]
+l, r = 1, 3                            # sum of a[1..3] inclusive
+print(pre[r + 1] - pre[l])             # 6  (1 + 4 + 1)</code></pre></div>
+        <div class="warn"><span class="label">🌸 Watch out:</span> these grow fast. 10 items have 3,628,800 permutations. Fine for n ≤ 8–10, too slow beyond that.</div>
+      </section>
+
+      <section id="mathtools" data-group="Power Tools" data-title="math &amp; functools" class="card scroll-mt-20">
+        <div class="flex items-center gap-3"><span class="sec-num">18</span><h2 class="sec-title">math &amp; functools</h2></div>
+        <div class="code"><pre><code class="language-python">import math
+math.gcd(12, 18), math.lcm(4, 6)   # 6 12
+math.isqrt(17)                     # 4   exact integer square root
+math.sqrt(16)                      # 4.0 (float)
+math.ceil(2.1), math.floor(2.9)    # 3 2
+math.factorial(5)                  # 120
+math.comb(5, 2), math.perm(5, 2)   # 10 20   "5 choose 2", ordered picks
+math.log2(8), math.log10(1000), math.log(math.e)   # 3.0 3.0 1.0
+math.pi, math.inf
+math.hypot(3, 4)                   # 5.0  distance
+math.prod([2, 3, 4])               # 24
+
+# Ceiling division without floats (safe for huge ints)
+a, b = 7, 2
+print(-(-a // b))                  # 4
+print((a + b - 1) // b)            # 4
+
+MOD = 10**9 + 7                    # the classic contest modulus
+print(pow(3, 10**18, MOD))         # fast modular exponentiation
+print(pow(3, -1, MOD))             # modular inverse (3.8+)</code></pre></div>
+        <p class="h3">functools — memoisation in one line</p>
+        <div class="analogy"><span class="label">🍑 Analogy:</span> <span class="ic">@cache</span> is a sticky note on the function: “I've solved this exact input before, here's the answer”. It turns slow recursive solutions into fast ones (dynamic programming).</div>
+        <div class="code"><pre><code class="language-python">import math
+from functools import cache, lru_cache, reduce
+
+@cache                             # Python 3.9+; same as @lru_cache(maxsize=None)
+def fib(n):
+    return n if n &lt; 2 else fib(n - 1) + fib(n - 2)
+print(fib(90))                     # instant: 2880067194370816120
+
+@lru_cache(maxsize=None)
+def ways(n):                       # ways to climb n stairs taking 1 or 2 steps
+    if n &lt;= 1:
+        return 1
+    return ways(n - 1) + ways(n - 2)
+print(ways(30))
+ways.cache_clear()                 # reset between test cases if needed
+
+print(reduce(lambda acc, x: acc * x, [1, 2, 3, 4]))   # 24  fold a list into one value
+print(reduce(math.gcd, [12, 18, 24]))                 # 6   gcd of many numbers</code></pre></div>
+        <div class="warn"><span class="label">🌸 Watch out:</span> cached function arguments must be hashable — pass tuples, not lists.</div>
+      </section>
+
+      <section id="bits" data-group="Power Tools" data-title="Bit Manipulation" class="card scroll-mt-20">
+        <div class="flex items-center gap-3"><span class="sec-num">19</span><h2 class="sec-title">Bit Manipulation</h2></div>
+        <p class="prose-p">Numbers are stored as 0s and 1s. Bit tricks let you treat one integer as a row of on/off switches.</p>
+        <div class="diagram">
+          <p class="text-xs font-semibold text-slate-500 mb-3">DIAGRAM · 13 in binary</p>
+          <div class="flex gap-1 font-mono text-sm">
+            <div class="text-center"><div class="cell bg-mint-100 text-mint-700">1</div><div class="text-xs mt-1">8</div></div>
+            <div class="text-center"><div class="cell bg-mint-100 text-mint-700">1</div><div class="text-xs mt-1">4</div></div>
+            <div class="text-center"><div class="cell bg-slate-100 text-slate-400">0</div><div class="text-xs mt-1">2</div></div>
+            <div class="text-center"><div class="cell bg-mint-100 text-mint-700">1</div><div class="text-xs mt-1">1</div></div>
+          </div>
+          <p class="text-xs text-slate-500 mt-3">8 + 4 + 1 = 13 → <span class="ic">0b1101</span>. Bit <span class="ic">i</span> is worth 2ⁱ, counting from the right starting at 0.</p>
+        </div>
+        <div class="code"><pre><code class="language-python">a, b = 0b1100, 0b1010     # 12, 10
+a &amp; b, a | b, a ^ b       # 8 14 6     AND, OR, XOR
+~a                        # -13        flip all bits
+1 &lt;&lt; 4, 40 &gt;&gt; 2           # 16 10      multiply / divide by powers of 2
+
+x, i = 13, 2
+(x &gt;&gt; i) &amp; 1              # 1   is bit i on?
+x | (1 &lt;&lt; i)              # turn bit i on
+x &amp; ~(1 &lt;&lt; i)             # turn bit i off
+x ^ (1 &lt;&lt; i)              # toggle bit i
+x &amp; -x                    # lowest set bit (1)
+x &amp; (x - 1) == 0          # power of two? (for x &gt; 0)
+bin(x).count("1")         # 3  number of 1 bits
+x.bit_count()             # 3  same, faster (3.10+)
+x.bit_length()            # 4  bits needed
+
+# Every subset of n items, as bitmasks
+items = ["a", "b", "c"]
+n = len(items)
+for mask in range(1 &lt;&lt; n):
+    subset = [items[j] for j in range(n) if mask &gt;&gt; j &amp; 1]
+    print(mask, subset)
+
+# XOR trick: find the one number without a pair
+from functools import reduce
+from operator import xor
+print(reduce(xor, [4, 1, 2, 1, 2]))   # 4</code></pre></div>
+      </section>
+
+      <section id="numbers" data-group="Power Tools" data-title="Big Numbers &amp; Precision" class="card scroll-mt-20">
+        <div class="flex items-center gap-3"><span class="sec-num">20</span><h2 class="sec-title">Big Numbers &amp; Precision</h2></div>
+        <p class="prose-p">Python <span class="ic">int</span>s never overflow — they grow as big as you need. Floats, however, are approximations.</p>
+        <div class="code"><pre><code class="language-python">print(2 ** 200)                 # exact, no overflow
+print(0.1 + 0.2)                # 0.30000000000000004  (!)
+print(0.1 + 0.2 == 0.3)         # False
+
+import math
+print(math.isclose(0.1 + 0.2, 0.3))     # True  compare floats safely
+print(abs((0.1 + 0.2) - 0.3) &lt; 1e-9)    # True  manual epsilon
+
+from decimal import Decimal, getcontext
+getcontext().prec = 50
+print(Decimal("0.1") + Decimal("0.2"))  # 0.3  exact decimal maths
+print(Decimal(2).sqrt())                # 50 significant digits
+
+from fractions import Fraction
+print(Fraction(1, 3) + Fraction(1, 6))  # 1/2  exact fractions
+
+print(10**18 // 7, 10**18 % 7)          # stay in integers when you can
+print(1_000_000 + 1)                    # underscores make big literals readable
+
+import sys
+sys.set_int_max_str_digits(0)           # lift the 4300-digit str(int) limit (3.11+)</code></pre></div>
+        <div class="tip"><span class="label">🌿 Tip:</span> When a problem says “print the answer modulo 10⁹+7”, take <span class="ic">% MOD</span> after every multiplication. Python won't overflow, but huge numbers get slow.</div>
+      </section>
+
+      <section id="classes" data-group="Power Tools" data-title="Classes &amp; Dataclasses" class="card scroll-mt-20">
+        <div class="flex items-center gap-3"><span class="sec-num">21</span><h2 class="sec-title">Classes &amp; Dataclasses</h2></div>
+        <p class="prose-p">A class is a blueprint for making your own type of object that bundles data and behaviour. In tests you'll mostly use them for nodes (linked lists, trees) and small helper structures.</p>
+        <div class="code"><pre><code class="language-python">class Node:
+    def __init__(self, val, next=None):   # runs when you create one
+        self.val = val
+        self.next = next
+
+    def __repr__(self):                    # how it prints
+        return f"Node({self.val})"
+
+head = Node(1, Node(2, Node(3)))
+cur = head
+while cur:
+    print(cur.val, end=" ")                # 1 2 3
+    cur = cur.next
+print()
+
+from dataclasses import dataclass, field
+
+@dataclass(order=True)                     # free __init__, __repr__, ==, and &lt;
+class Job:
+    priority: int
+    name: str = field(compare=False)
+
+jobs = sorted([Job(3, "c"), Job(1, "a")])
+print(jobs)                                # [Job(priority=1, name='a'), Job(priority=3, name='c')]
+
+# Union-Find (Disjoint Set) -- a classic helper class
+class DSU:
+    def __init__(self, n):
+        self.parent = list(range(n))
+    def find(self, x):
+        while self.parent[x] != x:
+            self.parent[x] = self.parent[self.parent[x]]   # path halving
+            x = self.parent[x]
+        return x
+    def union(self, a, b):
+        ra, rb = self.find(a), self.find(b)
+        if ra == rb:
+            return False
+        self.parent[ra] = rb
+        return True
+
+d = DSU(5); d.union(0, 1); d.union(1, 2)
+print(d.find(0) == d.find(2))              # True</code></pre></div>
+      </section>
+
+      <section id="errors" data-group="Power Tools" data-title="Errors &amp; Debugging" class="card scroll-mt-20">
+        <div class="flex items-center gap-3"><span class="sec-num">22</span><h2 class="sec-title">Errors &amp; Debugging</h2></div>
+        <p class="prose-p">Errors aren't failures; they're Python telling you exactly which line confused it. Read the <strong>last line</strong> of the message first.</p>
+        <div class="tbl-wrap"><table class="tbl">
+          <tr><th>Error</th><th>Usually means</th></tr>
+          <tr><td class="font-mono">IndexError</td><td>You asked for <span class="ic">a[5]</span> but the list is shorter. Check off-by-one loops.</td></tr>
+          <tr><td class="font-mono">KeyError</td><td>That key isn't in the dict. Use <span class="ic">.get()</span> or <span class="ic">defaultdict</span>.</td></tr>
+          <tr><td class="font-mono">ValueError</td><td>Right type, wrong value: <span class="ic">int("abc")</span>, or unpacking the wrong number of items.</td></tr>
+          <tr><td class="font-mono">TypeError</td><td>Mixing types: <span class="ic">"a" + 1</span>, or calling something that isn't a function.</td></tr>
+          <tr><td class="font-mono">NameError</td><td>Typo in a variable name, or it wasn't defined yet.</td></tr>
+          <tr><td class="font-mono">RecursionError</td><td>No base case, or recursion too deep. Raise the limit or use a loop.</td></tr>
+          <tr><td class="font-mono">ZeroDivisionError</td><td>Dividing by zero. Check denominators.</td></tr>
+          <tr><td class="font-mono">IndentationError</td><td>Mixed tabs/spaces or a missing indent after <span class="ic">:</span>.</td></tr>
+        </table></div>
+        <div class="code"><pre><code class="language-python">try:
+    value = int("abc")
+except ValueError as e:
+    print("Not a number:", e)
+except (KeyError, IndexError):
+    print("lookup failed")
+else:
+    print("ran only if no error")
+finally:
+    print("always runs (cleanup)")
+
+def withdraw(balance, amount):
+    if amount &gt; balance:
+        raise ValueError("insufficient funds")   # throw your own error
+    return balance - amount
+
+assert withdraw(10, 3) == 7, "sanity check failed"   # crash loudly if false
+
+# Quick debugging: = in an f-string prints the name and value
+x, y = 3, 4
+print(f"{x=} {y=} {x * y=}")    # x=3 y=4 x * y=12
+
+import sys
+print("debug info", file=sys.stderr)   # judges ignore stderr: safe for debug prints</code></pre></div>
+      </section>
+
+      <!-- ===================== FILES & WEB ===================== -->
+
+      <section id="files" data-group="Files &amp; Web" data-title="Reading &amp; Writing Files" class="card scroll-mt-20">
+        <div class="flex items-center gap-3"><span class="sec-num">23</span><h2 class="sec-title">Reading &amp; Writing Files</h2></div>
+        <p class="prose-p">Your program can save data to disk and load it back later. You <em>open</em> a file in a <em>mode</em>, use it, and <em>close</em> it.</p>
+        <div class="analogy"><span class="label">🍑 Analogy:</span> Opening a file is like borrowing a library book. <span class="ic">with</span> is the librarian who makes sure it's returned (closed) even if you trip over something halfway.</div>
+        <div class="diagram">
+          <p class="text-xs font-semibold text-slate-500 mb-3">DIAGRAM · The life of a file</p>
+          <div class="flex flex-wrap items-center gap-2 text-sm font-semibold">
+            <span class="rounded-xl bg-lavender-100 text-lavender-700 px-3 py-2">open(path, mode)</span><span class="text-slate-400">→</span>
+            <span class="rounded-xl bg-mint-100 text-mint-700 px-3 py-2">read() / write()</span><span class="text-slate-400">→</span>
+            <span class="rounded-xl bg-peach-100 text-peach-700 px-3 py-2">close()</span>
+            <span class="text-xs text-slate-500 font-normal ml-2">(<span class="ic">with</span> does the close for you)</span>
+          </div>
+        </div>
+        <div class="tbl-wrap"><table class="tbl">
+          <tr><th>Mode</th><th>Meaning</th><th>If the file exists…</th><th>If it doesn't…</th></tr>
+          <tr><td class="font-mono">"r"</td><td>read (default)</td><td>reads it</td><td>error</td></tr>
+          <tr><td class="font-mono">"w"</td><td>write</td><td><strong>erases it first</strong></td><td>creates it</td></tr>
+          <tr><td class="font-mono">"a"</td><td>append</td><td>adds to the end</td><td>creates it</td></tr>
+          <tr><td class="font-mono">"x"</td><td>exclusive create</td><td>error</td><td>creates it</td></tr>
+          <tr><td class="font-mono">"r+"</td><td>read and write</td><td>opens it</td><td>error</td></tr>
+          <tr><td class="font-mono">+"b"</td><td>binary (images, PDFs): <span class="ic">"rb"</span>, <span class="ic">"wb"</span></td><td colspan="2">works with <span class="ic">bytes</span> instead of text</td></tr>
+        </table></div>
+        <p class="h3">Text files</p>
+        <div class="code"><pre><code class="language-python"># Write (creates or overwrites notes.txt)
+with open("notes.txt", "w", encoding="utf-8") as f:
+    f.write("first line\n")
+    f.write("second line\n")
+    f.writelines(["third\n", "fourth\n"])
+    print("fifth", file=f)            # print can write to files too
+
+# Append
+with open("notes.txt", "a", encoding="utf-8") as f:
+    f.write("appended line\n")
+
+# Read everything
+with open("notes.txt", encoding="utf-8") as f:
+    text = f.read()                   # one big string
+
+# Read line by line (memory friendly for huge files)
+with open("notes.txt", encoding="utf-8") as f:
+    for line in f:
+        print(line.rstrip("\n"))
+
+# Other ways to read
+with open("notes.txt", encoding="utf-8") as f:
+    first = f.readline()              # just one line
+    rest = f.readlines()              # list of the remaining lines
+
+lines = open("notes.txt", encoding="utf-8").read().splitlines()   # quick, no "\n"s
+print(lines)</code></pre></div>
+        <p class="h3">CSV files (spreadsheets)</p>
+        <div class="code"><pre><code class="language-python">import csv
+
+rows = [["name", "score"], ["ada", 95], ["alan", 88]]
+with open("scores.csv", "w", newline="", encoding="utf-8") as f:
+    csv.writer(f).writerows(rows)
+
+with open("scores.csv", newline="", encoding="utf-8") as f:
+    for row in csv.reader(f):
+        print(row)                    # ['name', 'score'], ['ada', '95'], ...
+
+with open("scores.csv", newline="", encoding="utf-8") as f:
+    for row in csv.DictReader(f):     # each row becomes a dict by header
+        print(row["name"], int(row["score"]))
+
+with open("people.csv", "w", newline="", encoding="utf-8") as f:
+    w = csv.DictWriter(f, fieldnames=["name", "city"])
+    w.writeheader()
+    w.writerow({"name": "grace", "city": "NYC"})</code></pre></div>
+        <p class="h3">JSON files (structured data)</p>
+        <div class="code"><pre><code class="language-python">import json
+
+data = {"name": "ada", "skills": ["math", "code"], "active": True}
+with open("data.json", "w", encoding="utf-8") as f:
+    json.dump(data, f, indent=2)      # Python -&gt; file
+
+with open("data.json", encoding="utf-8") as f:
+    loaded = json.load(f)             # file -&gt; Python
+print(loaded["skills"][0])            # math
+
+text = json.dumps(data)               # Python -&gt; string
+back = json.loads(text)               # string -&gt; Python</code></pre></div>
+        <p class="h3">Paths, folders and housekeeping</p>
+        <div class="code"><pre><code class="language-python">from pathlib import Path
+import os, shutil
+
+p = Path("output") / "report.txt"     # builds paths that work on every OS
+p.parent.mkdir(parents=True, exist_ok=True)
+p.write_text("hello\n", encoding="utf-8")   # one-liner write
+print(p.read_text(encoding="utf-8"))        # one-liner read
+print(p.exists(), p.name, p.stem, p.suffix) # True report.txt report .txt
+
+for file in Path(".").glob("*.csv"):  # every .csv in the current folder
+    print(file, file.stat().st_size, "bytes")
+
+print(os.getcwd())                    # current working directory
+print(os.listdir("output"))           # ['report.txt']
+
+# Binary copy (works for images, PDFs...)
+with open("output/report.txt", "rb") as src, open("output/copy.bin", "wb") as dst:
+    dst.write(src.read())
+
+# Clean up the demo files
+for name in ["notes.txt", "scores.csv", "people.csv", "data.json"]:
+    os.remove(name)
+shutil.rmtree("output")               # delete a folder and everything in it</code></pre></div>
+        <div class="warn"><span class="label">🌸 Watch out:</span> <span class="ic">"w"</span> wipes the file the instant it opens. Always pass <span class="ic">encoding="utf-8"</span> so text with accents or emoji behaves the same on Windows, macOS and Linux.</div>
+      </section>
+
+      <section id="scraping" data-group="Files &amp; Web" data-title="Web Scraping" class="card scroll-mt-20">
+        <div class="flex items-center gap-3"><span class="sec-num">24</span><h2 class="sec-title">Web Scraping</h2></div>
+        <p class="prose-p">Scraping means downloading a web page with code and pulling out the parts you care about — prices, headlines, tables — instead of copying them by hand.</p>
+        <div class="analogy"><span class="label">🍑 Analogy:</span> <span class="ic">requests</span> is the delivery driver who fetches the page. <span class="ic">BeautifulSoup</span> is the highlighter you use to find the sentences you want in it.</div>
+        <div class="diagram">
+          <p class="text-xs font-semibold text-slate-500 mb-3">DIAGRAM · The scraping pipeline</p>
+          <div class="grid grid-cols-1 sm:grid-cols-4 gap-2 text-sm text-center">
+            <div class="rounded-xl bg-lavender-100 text-lavender-700 p-3"><div class="font-bold">1. Request</div><div class="text-xs mt-1">requests.get(url)</div></div>
+            <div class="rounded-xl bg-sky2-100 text-sky2-700 p-3"><div class="font-bold">2. HTML</div><div class="text-xs mt-1">resp.text</div></div>
+            <div class="rounded-xl bg-mint-100 text-mint-700 p-3"><div class="font-bold">3. Parse</div><div class="text-xs mt-1">BeautifulSoup(html)</div></div>
+            <div class="rounded-xl bg-peach-100 text-peach-700 p-3"><div class="font-bold">4. Save</div><div class="text-xs mt-1">CSV / JSON file</div></div>
+          </div>
+        </div>
+        <div class="code" data-norun><pre><code class="language-bash">pip install requests beautifulsoup4</code></pre></div>
+        <p class="h3">Step 1 — understand HTML</p>
+        <p class="prose-p mt-0">Web pages are made of nested <strong>tags</strong>. Tags have names (<span class="ic">h2</span>, <span class="ic">a</span>), and <strong>attributes</strong> like <span class="ic">class</span> and <span class="ic">href</span>. Right-click any page → <em>Inspect</em> to see them.</p>
+        <div class="code" data-norun><pre><code class="language-html">&lt;div class="product"&gt;
+  &lt;h2 class="title"&gt;Blue Mug&lt;/h2&gt;
+  &lt;span class="price"&gt;$12.50&lt;/span&gt;
+  &lt;a href="/mug/blue"&gt;details&lt;/a&gt;
+&lt;/div&gt;</code></pre></div>
+        <p class="h3">Step 2 — parse it (works offline)</p>
+        <div class="code" data-needs="bs4"><pre><code class="language-python">from bs4 import BeautifulSoup
+
+html = """
+&lt;div class="product"&gt;&lt;h2 class="title"&gt;Blue Mug&lt;/h2&gt;&lt;span class="price"&gt;$12.50&lt;/span&gt;&lt;a href="/mug/blue"&gt;details&lt;/a&gt;&lt;/div&gt;
+&lt;div class="product"&gt;&lt;h2 class="title"&gt;Red Cup&lt;/h2&gt;&lt;span class="price"&gt;$8.00&lt;/span&gt;&lt;a href="/cup/red"&gt;details&lt;/a&gt;&lt;/div&gt;
+"""
+soup = BeautifulSoup(html, "html.parser")
+
+print(soup.find("h2").text)                  # first match: Blue Mug
+print(len(soup.find_all("div", class_="product")))   # 2
+
+for card in soup.select("div.product"):      # CSS selectors
+    title = card.select_one(".title").get_text(strip=True)
+    price = float(card.select_one(".price").text.strip("$"))
+    link = card.find("a")["href"]            # read an attribute
+    print(title, price, link)</code></pre></div>
+        <p class="h3">Step 3 — fetch a real page and save the results</p>
+        <p class="prose-p mt-0"><a class="text-lavender-700 underline" href="https://quotes.toscrape.com" target="_blank" rel="noopener">quotes.toscrape.com</a> is a site built specifically for scraping practice.</p>
+        <div class="code" data-norun><pre><code class="language-python">import csv
+import time
+import requests
+from bs4 import BeautifulSoup
+from urllib.parse import urljoin
+
+BASE = "https://quotes.toscrape.com/"
+headers = {"User-Agent": "python-101-tutorial (learning project)"}
+
+rows = []
+url = BASE
+while url:
+    resp = requests.get(url, headers=headers, timeout=10)
+    resp.raise_for_status()                 # stop on 404 / 500 errors
+    soup = BeautifulSoup(resp.text, "html.parser")
+
+    for q in soup.select("div.quote"):
+        rows.append({
+            "text": q.select_one("span.text").get_text(strip=True),
+            "author": q.select_one("small.author").get_text(strip=True),
+            "tags": ", ".join(t.text for t in q.select("a.tag")),
+        })
+
+    nxt = soup.select_one("li.next a")      # follow pagination
+    url = urljoin(url, nxt["href"]) if nxt else None
+    time.sleep(1)                           # be polite: 1 request per second
+
+with open("quotes.csv", "w", newline="", encoding="utf-8") as f:
+    writer = csv.DictWriter(f, fieldnames=["text", "author", "tags"])
+    writer.writeheader()
+    writer.writerows(rows)
+print(f"saved {len(rows)} quotes")</code></pre></div>
+        <p class="h3">Useful extras</p>
+        <div class="code" data-norun><pre><code class="language-python">import requests
+
+# Query parameters and JSON APIs (often easier than scraping HTML!)
+r = requests.get("https://api.github.com/search/repositories",
+                 params={"q": "python", "per_page": 3}, timeout=10)
+print(r.status_code)                      # 200 = OK
+for repo in r.json()["items"]:
+    print(repo["full_name"])
+
+# Download a file (e.g. an image) in binary mode
+img = requests.get("https://www.python.org/static/img/python-logo.png", timeout=10)
+with open("logo.png", "wb") as f:
+    f.write(img.content)
+
+# HTML tables straight into a DataFrame (pip install pandas lxml)
+import pandas as pd
+tables = pd.read_html("https://en.wikipedia.org/wiki/List_of_programming_languages_by_type")
+print(tables[0].head())
+
+# No third-party libraries allowed? Use the standard library
+from urllib.request import urlopen
+html = urlopen("https://quotes.toscrape.com/").read().decode("utf-8")
+print(html[:100])</code></pre></div>
+        <div class="warn"><span class="label">🌸 Scrape responsibly:</span>
+          <ul class="list-disc pl-5 mt-1 space-y-1">
+            <li>Check <span class="ic">https://site.com/robots.txt</span> and the site's terms of service. Prefer an official API if one exists.</li>
+            <li>Slow down (<span class="ic">time.sleep</span>) and identify yourself in the User-Agent. Don't hammer servers.</li>
+            <li>Don't scrape personal data or content behind a login without permission.</li>
+            <li>Pages built with JavaScript may show nothing to <span class="ic">requests</span>. Look for the JSON API in your browser's Network tab, or use a browser tool like Playwright.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===================== TEST DAY ===================== -->
+
+      <section id="speed" data-group="Test Day" data-title="Speed Tips &amp; Pitfalls" class="card scroll-mt-20">
+        <div class="flex items-center gap-3"><span class="sec-num">25</span><h2 class="sec-title">Speed Tips &amp; Pitfalls</h2></div>
+        <p class="prose-p">Python is slower than C++, so a few habits matter when time limits are tight. A rough budget: Python does about <strong>10⁷ simple operations per second</strong>.</p>
+        <div class="grid sm:grid-cols-2 gap-4 mt-6 text-sm">
+          <div class="rounded-2xl bg-mint-50 border border-mint-100 p-4">
+            <p class="font-bold text-mint-700">✅ Do</p>
+            <ul class="mt-2 text-slate-600 space-y-1 list-disc pl-5">
+              <li>Read input with <span class="ic">sys.stdin</span>; print once with <span class="ic">join</span>.</li>
+              <li>Put your code in a <span class="ic">main()</span> function: local variables are faster than globals.</li>
+              <li>Use sets/dicts for lookups, deque for queues, heapq for “smallest next”.</li>
+              <li>Prefer built-ins (<span class="ic">sum</span>, <span class="ic">sorted</span>, comprehensions) over manual loops.</li>
+              <li>Test with the largest allowed input before submitting.</li>
+              <li>If available, submit with <strong>PyPy</strong>: often 5–10× faster for loops.</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl bg-blush-50 border border-blush-100 p-4">
+            <p class="font-bold text-blush-700">❌ Avoid</p>
+            <ul class="mt-2 text-slate-600 space-y-1 list-disc pl-5">
+              <li><span class="ic">list.pop(0)</span> or <span class="ic">list.insert(0, x)</span> in loops.</li>
+              <li><span class="ic">x in big_list</span> inside a loop.</li>
+              <li><span class="ic">[[0]*m]*n</span> for grids.</li>
+              <li>Mutable default arguments.</li>
+              <li>Comparing floats with <span class="ic">==</span>.</li>
+              <li>Naming variables <span class="ic">list</span>, <span class="ic">sum</span>, <span class="ic">max</span>, <span class="ic">input</span> by accident — you hide the built-in.</li>
+            </ul>
+          </div>
+        </div>
+        <p class="h3">Copying correctly</p>
+        <div class="code"><pre><code class="language-python">import copy
+grid = [[1, 2], [3, 4]]
+shallow = grid[:]               # new outer list, SAME inner lists
+deep = copy.deepcopy(grid)      # everything copied
+rows_copy = [row[:] for row in grid]   # fast deep copy for a 2D list
+grid[0][0] = 99
+print(shallow[0][0], deep[0][0], rows_copy[0][0])   # 99 1 1</code></pre></div>
+        <p class="h3">Time complexity cheat sheet</p>
+        <div class="tbl-wrap"><table class="tbl">
+          <tr><th>Operation</th><th>list</th><th>dict / set</th><th>deque</th><th>heapq</th></tr>
+          <tr><td>Index <span class="ic">a[i]</span></td><td>O(1)</td><td>—</td><td>O(n) middle</td><td>min O(1)</td></tr>
+          <tr><td>Add at end</td><td>O(1)</td><td>O(1)</td><td>O(1)</td><td>O(log n) push</td></tr>
+          <tr><td>Remove from front</td><td>O(n)</td><td>—</td><td>O(1)</td><td>O(log n) pop</td></tr>
+          <tr><td><span class="ic">x in c</span></td><td>O(n)</td><td>O(1)</td><td>O(n)</td><td>O(n)</td></tr>
+          <tr><td>Sort</td><td>O(n log n)</td><td>—</td><td>—</td><td>—</td></tr>
+        </table></div>
+        <div class="tbl-wrap"><table class="tbl">
+          <tr><th>Input size n</th><th>Approach that usually fits in ~1 second (Python)</th></tr>
+          <tr><td>n ≤ 10</td><td>O(n!) — try every permutation</td></tr>
+          <tr><td>n ≤ 20</td><td>O(2ⁿ) — every subset / bitmask</td></tr>
+          <tr><td>n ≤ 500</td><td>O(n³)</td></tr>
+          <tr><td>n ≤ 5,000</td><td>O(n²)</td></tr>
+          <tr><td>n ≤ 10⁶</td><td>O(n log n) or O(n)</td></tr>
+          <tr><td>n ≥ 10⁹</td><td>O(log n) or O(1) — maths / binary search</td></tr>
+        </table></div>
+      </section>
+
+      <section id="template" data-group="Test Day" data-title="Contest Template" class="card scroll-mt-20">
+        <div class="flex items-center gap-3"><span class="sec-num">26</span><h2 class="sec-title">Contest Template</h2></div>
+        <p class="prose-p">Paste this at the start of every solution. It has fast I/O, the common imports, and a <span class="ic">main()</span> function ready to fill in.</p>
+        <div class="code" data-norun><pre><code class="language-python">import sys
+from collections import Counter, defaultdict, deque
+from heapq import heappush, heappop, heapify
+from bisect import bisect_left, bisect_right, insort
+from itertools import accumulate, permutations, combinations, product
+from functools import cache, lru_cache, reduce, cmp_to_key
+from math import gcd, lcm, isqrt, inf, comb
+
+input = sys.stdin.readline
+sys.setrecursionlimit(10**6)
+MOD = 10**9 + 7
+
+def ints():
+    return list(map(int, input().split()))
+
+def solve():
+    n = int(input())
+    a = ints()
+    return sum(a)          # &lt;-- your algorithm here
+
+def main():
+    t = int(input())       # remove these two lines if there is only one test
+    out = [str(solve()) for _ in range(t)]
+    print("\n".join(out))
+
+if __name__ == "__main__":
+    main()</code></pre></div>
+        <p class="prose-p">Try it: save as <span class="ic">sol.py</span>, put this in <span class="ic">in.txt</span>, then run <span class="ic">python3 sol.py &lt; in.txt</span>.</p>
+        <div class="code" data-norun><pre><code class="language-text">2
+3
+1 2 3
+2
+10 20</code></pre></div>
+        <p class="prose-p">Expected output: <span class="ic">6</span> and <span class="ic">30</span> on separate lines.</p>
+      </section>
+
+      <section id="cheatsheet" data-group="Test Day" data-title="One-Page Cheat Sheet" class="card scroll-mt-20">
+        <div class="flex items-center gap-3"><span class="sec-num">27</span><h2 class="sec-title">One-Page Cheat Sheet</h2></div>
+        <p class="prose-p">Everything above, compressed. Screenshot it, print it, revise it the night before.</p>
+        <div class="grid md:grid-cols-2 gap-4 mt-6 text-sm">
+          <div class="rounded-2xl bg-lavender-50 border border-lavender-100 p-4">
+            <p class="font-bold mb-2">I/O</p>
+            <pre class="font-mono text-xs whitespace-pre-wrap text-slate-700">n = int(input())
+a = list(map(int, input().split()))
+input = sys.stdin.readline
+print(*a) · print("\n".join(out))
+f"{x:.6f}"</pre>
+          </div>
+          <div class="rounded-2xl bg-mint-50 border border-mint-100 p-4">
+            <p class="font-bold mb-2">Strings</p>
+            <pre class="font-mono text-xs whitespace-pre-wrap text-slate-700">s[::-1] · s.split() · "".join(l)
+ord(c) - ord("a") · chr(97)
+s.count(x) · s.find(x) · s.replace(a, b)
+s.isdigit() · s.isalpha() · s.lower()</pre>
+          </div>
+          <div class="rounded-2xl bg-peach-50 border border-peach-100 p-4">
+            <p class="font-bold mb-2">Lists &amp; sorting</p>
+            <pre class="font-mono text-xs whitespace-pre-wrap text-slate-700">[[0]*m for _ in range(n)]
+sorted(a, key=lambda x: (-x[1], x[0]))
+enumerate(a) · zip(a, b) · zip(*grid)
+accumulate(a, initial=0)  # prefix sums</pre>
+          </div>
+          <div class="rounded-2xl bg-sky2-50 border border-sky2-100 p-4">
+            <p class="font-bold mb-2">Containers</p>
+            <pre class="font-mono text-xs whitespace-pre-wrap text-slate-700">Counter(a).most_common(k)
+defaultdict(list) · deque().popleft()
+heappush(h, x) · heappop(h) · -x for max
+bisect_left(a, x) · insort(a, x)</pre>
+          </div>
+          <div class="rounded-2xl bg-blush-50 border border-blush-100 p-4">
+            <p class="font-bold mb-2">Maths &amp; bits</p>
+            <pre class="font-mono text-xs whitespace-pre-wrap text-slate-700">gcd lcm isqrt comb factorial
+pow(b, e, MOD) · pow(x, -1, MOD)
+(a + b - 1) // b   # ceil div
+x &gt;&gt; i &amp; 1 · x.bit_count() · 1 &lt;&lt; n</pre>
+          </div>
+          <div class="rounded-2xl bg-butter-100 border border-butter-300/50 p-4">
+            <p class="font-bold mb-2">Files &amp; web</p>
+            <pre class="font-mono text-xs whitespace-pre-wrap text-slate-700">with open(p, "r"|"w"|"a", encoding="utf-8") as f:
+csv.reader / csv.DictWriter
+json.load(f) · json.dump(d, f, indent=2)
+requests.get(url, timeout=10)
+BeautifulSoup(html, "html.parser").select(css)</pre>
+          </div>
+        </div>
+        <div class="tip"><span class="label">🌿 Next steps:</span> You now have the tools. Practise turning ideas into code on sites like LeetCode, Codeforces, HackerRank or AtCoder — start with “easy” problems and focus on writing clean Python quickly.</div>
+      </section>
+
+      <footer class="text-center text-sm text-slate-500 py-8">
+        Made with 💜 for beginners · <a href="#top" class="text-lavender-700 underline">Back to top</a>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Back to top -->
+  <a href="#top" id="to-top" aria-label="Back to top"
+    class="fixed bottom-5 right-5 z-30 w-11 h-11 rounded-2xl bg-white border border-lavender-100 shadow-lg flex items-center justify-center text-lavender-700 opacity-0 pointer-events-none transition-opacity">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
+  </a>
+
+  <script src="script.js"></script>
+</body>
+</html>
