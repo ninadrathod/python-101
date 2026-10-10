@@ -153,7 +153,7 @@ git add -A && git commit -m "Update course" && git push
 
 ## Customising
 
-- **Colours / theme:** edit the `tailwind.config` block in the `<head>` of `index.html` (the `lavender`, `mint`, `peach`, `sky2`, `blush` and `butter` palettes).
+- **Colours / theme:** a dark code-editor theme. Edit the `tailwind.config` block in the `<head>` of `index.html`. The neutrals are `canvas`, `panel`, `line` and `fg`; the accent palettes are named after syntax-highlighting roles: `term` (prompt green), `fn` (cyan), `str` (orange), `kw` (purple), `err` (red) and `num` (yellow).
 - **Reusable styles:** the `<style type="text/tailwindcss">` block defines `.card`, `.tip`, `.analogy`, `.warn`, `.code` and so on with `@apply`.
 - **Add a section:** copy any `<section>` and give it a unique `id`, a `data-group` (sidebar heading) and a `data-title` (sidebar label). The table of contents builds itself.
 

@@ -17,14 +17,14 @@
       const block = document.createElement('div');
       block.className = 'mb-5';
       block.dataset.tocGroup = '';
-      block.innerHTML = `<p class="px-3 mb-1 text-[11px] font-bold uppercase tracking-wider text-slate-400">${group}</p>`;
+      block.innerHTML = `<p class="px-3 mb-1 font-mono text-[11px] font-semibold uppercase tracking-wider text-zinc-500">${group}</p>`;
       items.forEach((s) => {
         const num = s.querySelector('.sec-num')?.textContent ?? '';
         const a = document.createElement('a');
         a.href = `#${s.id}`;
         a.className = 'toc-link';
         a.dataset.target = s.id;
-        a.innerHTML = `<span class="font-mono text-[11px] text-slate-400 mr-2">${num}</span>${s.dataset.title}`;
+        a.innerHTML = `<span class="font-mono text-[11px] text-zinc-600 mr-2">${num}</span>${s.dataset.title}`;
         block.appendChild(a);
       });
       nav.appendChild(block);
@@ -91,28 +91,42 @@
   /* ---------- Syntax highlighting + copy buttons ---------- */
   if (window.hljs) hljs.highlightAll();
 
+  const langNames = { python: 'python', bash: 'shell', html: 'html', text: 'stdin' };
+
   document.querySelectorAll('.code').forEach((block) => {
     const code = block.querySelector('code');
+    const lang = (code.className.match(/language-(\w+)/) || [])[1] || 'text';
+
+    // Terminal-style title bar: traffic lights, language, copy button.
+    const bar = document.createElement('div');
+    bar.className = 'flex items-center gap-1.5 px-3 py-1.5 border-b border-line bg-panel';
+    bar.innerHTML = `
+      <span class="w-2.5 h-2.5 rounded-full bg-err-500/80"></span>
+      <span class="w-2.5 h-2.5 rounded-full bg-num-500/80"></span>
+      <span class="w-2.5 h-2.5 rounded-full bg-term-500/80"></span>
+      <span class="ml-2 font-mono text-[11px] text-zinc-500">${langNames[lang] || lang}</span>`;
+    block.prepend(bar);
+
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.textContent = 'Copy';
+    btn.textContent = 'copy';
     btn.setAttribute('aria-label', 'Copy code');
-    btn.className = 'absolute top-2.5 right-2.5 rounded-lg bg-white/90 border border-lavender-200 px-2.5 py-1 text-xs font-semibold text-lavender-700 hover:bg-lavender-100 transition';
+    btn.className = 'ml-auto rounded-md border border-line px-2 py-0.5 font-mono text-[11px] text-zinc-400 hover:text-term-700 hover:border-term-300 transition';
     btn.addEventListener('click', async () => {
       try {
         await navigator.clipboard.writeText(code.innerText);
-        btn.textContent = 'Copied!';
+        btn.textContent = 'copied ✓';
       } catch {
-        btn.textContent = 'Press Ctrl+C';
+        btn.textContent = 'press ctrl+c';
         const range = document.createRange();
         range.selectNodeContents(code);
         const sel = window.getSelection();
         sel.removeAllRanges();
         sel.addRange(range);
       }
-      setTimeout(() => { btn.textContent = 'Copy'; }, 1600);
+      setTimeout(() => { btn.textContent = 'copy'; }, 1600);
     });
-    block.appendChild(btn);
+    bar.appendChild(btn);
   });
 
   /* ---------- Reading progress + back to top ---------- */

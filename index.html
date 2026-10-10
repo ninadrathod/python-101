@@ -10,24 +10,27 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
+    // Palette named after syntax-highlighting roles, tuned for a dark editor.
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            cream: '#FFFBF5',
-            ink: '#2E2A47',
-            lavender: { 50: '#F8F6FF', 100: '#F1EDFF', 200: '#E3DBFF', 300: '#C9BBFF', 500: '#8B7CF6', 700: '#5B4BC4' },
-            mint:     { 50: '#F3FCF8', 100: '#E6F8F0', 300: '#A8E6CF', 700: '#2F8F6B' },
-            peach:    { 50: '#FFF8F3', 100: '#FFF0E8', 300: '#FFC8A8', 700: '#C2622D' },
-            sky2:     { 50: '#F5FAFF', 100: '#EAF4FF', 300: '#B5D8FF', 700: '#2F6DB5' },
-            blush:    { 50: '#FFF6F9', 100: '#FFE8EF', 300: '#FFB8CC', 700: '#B83B66' },
-            butter:   { 100: '#FFF7D6', 300: '#FFE58A', 700: '#8A6A00' },
+            canvas: '#0d1117',
+            panel: '#161b22',
+            line: '#30363d',
+            fg: '#e6edf3',
+            term: { 50: '#0f1d15', 100: '#13291c', 200: '#1f4a2e', 300: '#2ea043', 500: '#3fb950', 700: '#7ee787' },
+            fn:   { 50: '#0b1c22', 100: '#0f2a33', 200: '#164452', 300: '#2b8a9e', 500: '#39c5cf', 700: '#76e3ea' },
+            str:  { 50: '#211910', 100: '#2d2113', 200: '#4d3519', 300: '#9e6a2c', 500: '#f0883e', 700: '#ffa657' },
+            kw:   { 50: '#1a1530', 100: '#241c40', 200: '#3b2d6b', 300: '#6e56cf', 500: '#a371f7', 700: '#d2a8ff' },
+            err:  { 50: '#241215', 100: '#33171b', 200: '#5c2229', 300: '#b3404a', 500: '#f85149', 700: '#ff7b72' },
+            num:  { 50: '#211d0d', 100: '#2b2510', 200: '#4a3f14', 300: '#9e8122', 500: '#d29922', 700: '#e3b341' },
           },
           fontFamily: {
             sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
@@ -38,69 +41,84 @@
     };
   </script>
   <style type="text/tailwindcss">
+    @layer base {
+      body {
+        background-image:
+          linear-gradient(rgba(240, 246, 252, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(240, 246, 252, 0.03) 1px, transparent 1px);
+        background-size: 32px 32px;
+      }
+    }
     @layer components {
-      .card      { @apply bg-white/85 backdrop-blur rounded-3xl border border-lavender-100 shadow-[0_10px_40px_-12px_rgba(139,124,246,0.18)] p-5 sm:p-8; }
-      .sec-num   { @apply inline-flex items-center justify-center w-10 h-10 shrink-0 rounded-2xl bg-lavender-100 text-lavender-700 font-bold text-sm; }
-      .sec-title { @apply text-2xl sm:text-3xl font-extrabold tracking-tight text-ink; }
-      .prose-p   { @apply text-slate-600 leading-relaxed mt-4; }
-      .h3        { @apply text-lg font-bold text-ink mt-8 mb-2; }
-      .ic        { @apply font-mono text-[0.85em] bg-lavender-50 text-lavender-700 px-1.5 py-0.5 rounded-md border border-lavender-100; }
-      .analogy   { @apply mt-5 rounded-2xl bg-peach-50 border border-peach-100 p-4 text-slate-700 text-sm leading-relaxed; }
-      .tip       { @apply mt-5 rounded-2xl bg-mint-50 border border-mint-100 p-4 text-slate-700 text-sm leading-relaxed; }
-      .warn      { @apply mt-5 rounded-2xl bg-blush-50 border border-blush-100 p-4 text-slate-700 text-sm leading-relaxed; }
-      .label     { @apply font-bold mr-1; }
-      .code      { @apply relative mt-4 rounded-2xl border border-lavender-100 bg-lavender-50 overflow-hidden; }
-      .code pre  { @apply overflow-x-auto p-4 pr-16 text-[13px] leading-relaxed font-mono; }
+      .card      { @apply bg-panel/80 backdrop-blur rounded-2xl border border-line shadow-[0_24px_60px_-30px_rgba(0,0,0,0.8)] p-5 sm:p-8; }
+      .sec-num   { @apply inline-flex items-center justify-center h-9 px-2.5 shrink-0 rounded-lg bg-term-100 border border-term-200 text-term-500 font-mono font-semibold text-sm; }
+      .sec-title { @apply font-mono text-xl sm:text-2xl font-bold tracking-tight text-fg; }
+      .prose-p   { @apply text-zinc-300 leading-relaxed mt-4; }
+      .h3        { @apply font-mono text-base font-semibold text-fg mt-8 mb-2; }
+      .h3::before { @apply text-term-500; content: "## "; }
+      .ic        { @apply font-mono text-[0.85em] bg-canvas text-term-700 px-1.5 py-0.5 rounded-md border border-line; }
+      .analogy   { @apply mt-5 rounded-xl bg-str-50 border border-str-200 p-4 text-zinc-200 text-sm leading-relaxed; }
+      .tip       { @apply mt-5 rounded-xl bg-fn-50 border border-fn-200 p-4 text-zinc-200 text-sm leading-relaxed; }
+      .warn      { @apply mt-5 rounded-xl bg-err-50 border border-err-200 p-4 text-zinc-200 text-sm leading-relaxed; }
+      .label     { @apply font-mono font-semibold mr-1; }
+      .analogy .label { @apply text-str-700; }
+      .tip .label     { @apply text-fn-700; }
+      .warn .label    { @apply text-err-700; }
+      .code      { @apply relative mt-4 rounded-xl border border-line bg-canvas overflow-hidden; }
+      .code pre  { @apply overflow-x-auto p-4 text-[13px] leading-relaxed font-mono; }
       .code pre code.hljs { @apply bg-transparent p-0; }
       .tbl       { @apply w-full text-sm text-left mt-4; }
-      .tbl th    { @apply bg-lavender-50 text-ink font-semibold px-3 py-2 border-b border-lavender-100; }
-      .tbl td    { @apply px-3 py-2 border-b border-slate-100 text-slate-600 align-top; }
-      .tbl-wrap  { @apply overflow-x-auto rounded-2xl border border-lavender-100 mt-4; }
-      .diagram   { @apply mt-5 rounded-2xl border border-dashed border-lavender-300 bg-white p-5 overflow-x-auto; }
-      .cell      { @apply w-12 h-12 flex items-center justify-center rounded-xl font-mono font-semibold; }
-      .toc-link  { @apply block rounded-xl px-3 py-1.5 text-sm text-slate-600 hover:bg-lavender-50 hover:text-lavender-700 transition; }
-      .toc-link.active { @apply bg-lavender-100 text-lavender-700 font-semibold; }
+      .tbl th    { @apply bg-canvas text-term-700 font-mono text-xs font-semibold px-3 py-2 border-b border-line; }
+      .tbl td    { @apply px-3 py-2 border-b border-line text-zinc-300 align-top; }
+      .tbl-wrap  { @apply overflow-x-auto rounded-xl border border-line mt-4; }
+      .diagram   { @apply mt-5 rounded-xl border border-dashed border-line bg-canvas p-5 overflow-x-auto; }
+      .cell      { @apply w-12 h-12 flex items-center justify-center rounded-lg font-mono font-semibold; }
+      .toc-link  { @apply block rounded-lg px-3 py-1.5 text-sm text-zinc-400 hover:bg-term-50 hover:text-term-700 transition; }
+      .toc-link.active { @apply bg-term-100 text-term-700 font-semibold; }
+      .cursor    { animation: blink 1s steps(1) infinite; }
     }
+    @keyframes blink { 50% { opacity: 0; } }
+    @media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }
   </style>
 </head>
 
-<body class="bg-cream font-sans text-ink antialiased selection:bg-lavender-200">
+<body class="bg-canvas font-sans text-fg antialiased selection:bg-term-200">
 
   <!-- Reading progress -->
-  <div id="progress" class="fixed top-0 left-0 h-1 w-0 z-[60] bg-gradient-to-r from-lavender-300 via-blush-300 to-peach-300 transition-[width] duration-150"></div>
+  <div id="progress" class="fixed top-0 left-0 h-0.5 w-0 z-[60] bg-gradient-to-r from-term-500 via-fn-500 to-kw-500 transition-[width] duration-150"></div>
 
-  <!-- Soft background blobs -->
+  <!-- Faint editor glow -->
   <div aria-hidden="true" class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-    <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-lavender-200/40 blur-3xl"></div>
-    <div class="absolute top-1/3 -right-40 w-[28rem] h-[28rem] rounded-full bg-mint-100/70 blur-3xl"></div>
-    <div class="absolute bottom-0 left-1/4 w-96 h-96 rounded-full bg-peach-100/70 blur-3xl"></div>
+    <div class="absolute -top-40 -left-40 w-[30rem] h-[30rem] rounded-full bg-term-500/10 blur-3xl"></div>
+    <div class="absolute top-1/3 -right-40 w-[28rem] h-[28rem] rounded-full bg-kw-500/10 blur-3xl"></div>
+    <div class="absolute bottom-0 left-1/4 w-96 h-96 rounded-full bg-fn-500/10 blur-3xl"></div>
   </div>
 
   <!-- Mobile top bar -->
-  <header class="lg:hidden sticky top-0 z-40 bg-cream/85 backdrop-blur border-b border-lavender-100">
+  <header class="lg:hidden sticky top-0 z-40 bg-canvas/85 backdrop-blur border-b border-line">
     <div class="flex items-center justify-between px-4 h-14">
-      <a href="#top" class="flex items-center gap-2 font-extrabold">
-        <span class="w-8 h-8 rounded-xl bg-gradient-to-br from-lavender-300 to-blush-300 flex items-center justify-center text-white text-sm">Py</span>
-        Python 101
+      <a href="#top" class="flex items-center gap-2 font-mono font-bold">
+        <span class="w-8 h-8 rounded-lg bg-term-100 border border-term-200 flex items-center justify-center text-term-500 text-sm">&gt;_</span>
+        python-101
       </a>
       <button id="menu-open" aria-label="Open menu" aria-controls="drawer" aria-expanded="false"
-        class="w-10 h-10 rounded-xl bg-white border border-lavender-100 flex items-center justify-center shadow-sm">
+        class="w-10 h-10 rounded-lg bg-panel border border-line flex items-center justify-center">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
     </div>
   </header>
 
   <!-- Mobile drawer -->
-  <div id="overlay" class="lg:hidden fixed inset-0 z-40 bg-ink/30 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity"></div>
+  <div id="overlay" class="lg:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity"></div>
   <aside id="drawer" aria-label="Course contents"
-    class="lg:hidden fixed inset-y-0 left-0 z-50 w-[85%] max-w-xs bg-cream shadow-2xl -translate-x-full transition-transform duration-300 flex flex-col">
-    <div class="flex items-center justify-between px-5 h-14 border-b border-lavender-100">
-      <span class="font-extrabold">Contents</span>
-      <button id="menu-close" aria-label="Close menu" class="w-9 h-9 rounded-xl hover:bg-lavender-50 flex items-center justify-center">
+    class="lg:hidden fixed inset-y-0 left-0 z-50 w-[85%] max-w-xs bg-panel border-r border-line shadow-2xl -translate-x-full transition-transform duration-300 flex flex-col">
+    <div class="flex items-center justify-between px-5 h-14 border-b border-line">
+      <span class="font-mono font-bold text-sm">EXPLORER</span>
+      <button id="menu-close" aria-label="Close menu" class="w-9 h-9 rounded-lg hover:bg-term-50 flex items-center justify-center">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
     </div>
-    <div class="p-4"><input type="search" placeholder="Filter topics…" data-toc-filter class="w-full rounded-xl border border-lavender-100 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-lavender-200" /></div>
+    <div class="p-4"><input type="search" placeholder="grep topics…" data-toc-filter class="w-full rounded-lg border border-line bg-canvas px-3 py-2 text-sm font-mono placeholder:text-zinc-500 outline-none focus:ring-2 focus:ring-term-300" /></div>
     <nav data-toc class="flex-1 overflow-y-auto px-3 pb-8"></nav>
   </aside>
 
@@ -110,13 +128,13 @@
     <aside class="hidden lg:block">
       <div class="sticky top-0 h-screen py-8 flex flex-col">
         <a href="#top" class="flex items-center gap-3 px-3 mb-6">
-          <span class="w-10 h-10 rounded-2xl bg-gradient-to-br from-lavender-300 to-blush-300 flex items-center justify-center text-white font-bold">Py</span>
+          <span class="w-10 h-10 rounded-lg bg-term-100 border border-term-200 flex items-center justify-center text-term-500 font-mono font-bold">&gt;_</span>
           <span>
-            <span class="block font-extrabold leading-tight">Python 101</span>
-            <span class="block text-xs text-slate-500">The Cheat Sheet Course</span>
+            <span class="block font-mono font-bold leading-tight">python-101</span>
+            <span class="block text-xs text-zinc-400">The Cheat Sheet Course</span>
           </span>
         </a>
-        <input type="search" placeholder="Filter topics…" data-toc-filter class="mx-3 mb-4 rounded-xl border border-lavender-100 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-lavender-200" />
+        <input type="search" placeholder="grep topics…" data-toc-filter class="mx-3 mb-4 rounded-lg border border-line bg-panel px-3 py-2 text-sm font-mono placeholder:text-zinc-500 outline-none focus:ring-2 focus:ring-term-300" />
         <nav data-toc class="flex-1 overflow-y-auto pr-2 pb-8"></nav>
       </div>
     </aside>
@@ -124,26 +142,34 @@
     <!-- Main content -->
     <main class="py-8 lg:py-12 space-y-8 min-w-0">
 
-      <!-- Hero -->
-      <div class="card relative overflow-hidden">
-        <div class="absolute -right-10 -top-10 w-48 h-48 rounded-full bg-gradient-to-br from-mint-100 to-sky2-100"></div>
-        <div class="relative">
-          <span class="inline-block rounded-full bg-mint-100 text-mint-700 text-xs font-bold px-3 py-1">Beginner friendly · Test-day ready</span>
-          <h1 class="mt-4 text-4xl sm:text-5xl font-extrabold tracking-tight">Python 101 <span class="bg-gradient-to-r from-lavender-500 to-blush-700 bg-clip-text text-transparent">Cheat Sheet</span></h1>
-          <p class="mt-4 text-lg text-slate-600 max-w-2xl leading-relaxed">
-            You already have an idea for how to solve the problem. This course gives you the <strong>Python tools to write it down</strong> —
+      <!-- Hero: a terminal window -->
+      <div class="rounded-2xl border border-line bg-panel/90 backdrop-blur overflow-hidden shadow-[0_30px_80px_-30px_rgba(63,185,80,0.25)]">
+        <div class="flex items-center gap-2 px-4 py-3 border-b border-line bg-canvas">
+          <span class="w-3 h-3 rounded-full bg-err-500"></span>
+          <span class="w-3 h-3 rounded-full bg-num-500"></span>
+          <span class="w-3 h-3 rounded-full bg-term-500"></span>
+          <span class="ml-3 font-mono text-xs text-zinc-500">~/python-101 — zsh</span>
+        </div>
+        <div class="p-5 sm:p-8">
+          <p class="font-mono text-sm text-zinc-400"><span class="text-term-500">➜</span> <span class="text-fn-500">~/python-101</span> python3 learn.py --level beginner</p>
+          <h1 class="mt-5 font-mono text-3xl sm:text-5xl font-bold tracking-tight">
+            <span class="text-kw-700">import</span> python_101<br />
+            <span class="text-term-500">&gt;&gt;&gt;</span> <span class="text-str-700">"Cheat Sheet"</span><span class="cursor text-term-500">▋</span>
+          </h1>
+          <p class="mt-6 text-lg text-zinc-300 max-w-2xl leading-relaxed">
+            You already have an idea for how to solve the problem. This course gives you the <strong class="text-fg">Python tools to write it down</strong> —
             fast input, handy built-ins, the standard-library helpers that save you writing code, plus reading and writing files and scraping websites.
           </p>
-          <div class="mt-6 flex flex-wrap gap-2 text-xs font-semibold">
-            <span class="rounded-full bg-lavender-100 text-lavender-700 px-3 py-1">27 sections</span>
-            <span class="rounded-full bg-peach-100 text-peach-700 px-3 py-1">Copy-paste snippets</span>
-            <span class="rounded-full bg-sky2-100 text-sky2-700 px-3 py-1">Visual diagrams</span>
-            <span class="rounded-full bg-blush-100 text-blush-700 px-3 py-1">Python 3.10+</span>
+          <div class="mt-6 flex flex-wrap gap-2 text-xs font-mono font-semibold">
+            <span class="rounded-md bg-term-100 border border-term-200 text-term-700 px-2.5 py-1">27 sections</span>
+            <span class="rounded-md bg-str-100 border border-str-200 text-str-700 px-2.5 py-1">copy-paste snippets</span>
+            <span class="rounded-md bg-kw-100 border border-kw-200 text-kw-700 px-2.5 py-1">visual diagrams</span>
+            <span class="rounded-md bg-fn-100 border border-fn-200 text-fn-700 px-2.5 py-1">python &gt;= 3.10</span>
           </div>
-          <p class="mt-6 text-sm text-slate-500">How to read the coloured boxes:
-            <span class="inline-block rounded-lg bg-peach-50 border border-peach-100 px-2 py-0.5 ml-1">🍑 Analogy</span>
-            <span class="inline-block rounded-lg bg-mint-50 border border-mint-100 px-2 py-0.5 ml-1">🌿 Tip</span>
-            <span class="inline-block rounded-lg bg-blush-50 border border-blush-100 px-2 py-0.5 ml-1">🌸 Watch out</span>
+          <p class="mt-6 text-sm text-zinc-400">How to read the coloured boxes:
+            <span class="inline-block rounded-md bg-str-50 border border-str-200 text-str-700 font-mono px-2 py-0.5 ml-1"># analogy</span>
+            <span class="inline-block rounded-md bg-fn-50 border border-fn-200 text-fn-700 font-mono px-2 py-0.5 ml-1"># tip</span>
+            <span class="inline-block rounded-md bg-err-50 border border-err-200 text-err-700 font-mono px-2 py-0.5 ml-1"># watch out</span>
           </p>
         </div>
       </div>
@@ -154,18 +180,18 @@
         <div class="flex items-center gap-3"><span class="sec-num">01</span><h2 class="sec-title">Prerequisites</h2></div>
         <p class="prose-p">You don't need to be a programmer yet. You need a few things on your computer and a couple of ideas in your head.</p>
         <div class="grid sm:grid-cols-2 gap-4 mt-6">
-          <div class="rounded-2xl bg-lavender-50 border border-lavender-100 p-4">
+          <div class="rounded-2xl bg-term-50 border border-term-100 p-4">
             <p class="font-bold">🧰 Tools</p>
-            <ul class="mt-2 text-sm text-slate-600 space-y-1 list-disc pl-5">
-              <li><strong>Python 3.10 or newer</strong> from <a class="text-lavender-700 underline" href="https://www.python.org/downloads/" target="_blank" rel="noopener">python.org</a></li>
+            <ul class="mt-2 text-sm text-zinc-300 space-y-1 list-disc pl-5">
+              <li><strong>Python 3.10 or newer</strong> from <a class="text-term-700 underline" href="https://www.python.org/downloads/" target="_blank" rel="noopener">python.org</a></li>
               <li>A code editor — <strong>VS Code</strong> with the Python extension is a good free choice</li>
               <li>A terminal (Terminal on macOS/Linux, PowerShell on Windows)</li>
               <li>For the scraping section: <span class="ic">pip install requests beautifulsoup4</span></li>
             </ul>
           </div>
-          <div class="rounded-2xl bg-mint-50 border border-mint-100 p-4">
+          <div class="rounded-2xl bg-fn-50 border border-fn-100 p-4">
             <p class="font-bold">🧠 Ideas</p>
-            <ul class="mt-2 text-sm text-slate-600 space-y-1 list-disc pl-5">
+            <ul class="mt-2 text-sm text-zinc-300 space-y-1 list-disc pl-5">
               <li>A <strong>program</strong> is a list of instructions run top to bottom.</li>
               <li>A <strong>variable</strong> is a name for a value.</li>
               <li>A <strong>file</strong> lives in a <strong>folder</strong>, and has a <strong>path</strong> like <span class="ic">docs/notes.txt</span>.</li>
@@ -178,7 +204,7 @@
 python3                # opens the interactive "REPL"; type exit() to leave
 python3 solution.py    # runs a file
 python3 solution.py &lt; input.txt   # feeds input.txt as if you typed it</code></pre></div>
-        <div class="tip"><span class="label">🌿 Tip:</span> The <span class="ic">&lt; input.txt</span> trick is how you test contest solutions: paste the sample input into a file and run against it again and again.</div>
+        <div class="tip"><span class="label"># tip:</span> The <span class="ic">&lt; input.txt</span> trick is how you test contest solutions: paste the sample input into a file and run against it again and again.</div>
       </section>
 
       <section id="setup" data-group="Getting Started" data-title="Your First Program" class="card scroll-mt-20">
@@ -193,7 +219,7 @@ print(f"{name} has {len(name)} letters")   # Ada has 3 letters</code></pre></div
         <div class="code"><pre><code class="language-python">for i in range(3):
     print("inside the loop", i)   # indented: repeats
 print("after the loop")           # not indented: runs once</code></pre></div>
-        <div class="analogy"><span class="label">🍑 Analogy:</span> Indentation is like bullet points in a to-do list. Sub-bullets belong to the bullet above them.</div>
+        <div class="analogy"><span class="label"># analogy:</span> Indentation is like bullet points in a to-do list. Sub-bullets belong to the bullet above them.</div>
       </section>
 
       <!-- ===================== CORE LANGUAGE ===================== -->
@@ -202,13 +228,13 @@ print("after the loop")           # not indented: runs once</code></pre></div>
         <div class="flex items-center gap-3"><span class="sec-num">03</span><h2 class="sec-title">Variables, Types &amp; Operators</h2></div>
         <p class="prose-p">A variable is a <strong>name tag</strong> stuck onto a value. The value has a <strong>type</strong>: whole number, decimal number, text, true/false, or “nothing”.</p>
         <div class="diagram">
-          <p class="text-xs font-semibold text-slate-500 mb-3">DIAGRAM · Names point at values</p>
+          <p class="text-xs font-semibold text-zinc-400 mb-3">DIAGRAM · Names point at values</p>
           <div class="flex flex-wrap items-center gap-3 font-mono text-sm">
-            <span class="rounded-lg bg-lavender-100 px-3 py-1.5">a</span><span>──▶</span>
-            <span class="rounded-xl border-2 border-mint-300 bg-mint-50 px-4 py-2">[1, 2, 3]</span><span>◀──</span>
-            <span class="rounded-lg bg-lavender-100 px-3 py-1.5">b</span>
+            <span class="rounded-lg bg-term-100 px-3 py-1.5">a</span><span>──▶</span>
+            <span class="rounded-xl border-2 border-fn-300 bg-fn-50 px-4 py-2">[1, 2, 3]</span><span>◀──</span>
+            <span class="rounded-lg bg-term-100 px-3 py-1.5">b</span>
           </div>
-          <p class="text-xs text-slate-500 mt-3"><span class="ic">b = a</span> does <em>not</em> copy the list. Both tags now point at the same list, so changing it through <span class="ic">b</span> also changes what <span class="ic">a</span> sees.</p>
+          <p class="text-xs text-zinc-400 mt-3"><span class="ic">b = a</span> does <em>not</em> copy the list. Both tags now point at the same list, so changing it through <span class="ic">b</span> also changes what <span class="ic">a</span> sees.</p>
         </div>
         <div class="code"><pre><code class="language-python">age = 21              # int   (whole number, any size)
 price = 9.99          # float (decimal number)
@@ -244,13 +270,13 @@ print(3 == 3.0, 3 != 4)  # True True
 
 # Logic words
 print(True and False, True or False, not True)   # False True False</code></pre></div>
-        <div class="warn"><span class="label">🌸 Watch out:</span> <span class="ic">//</span> and <span class="ic">%</span> round towards <em>minus infinity</em>: <span class="ic">-7 // 2</span> is <span class="ic">-4</span> and <span class="ic">-7 % 2</span> is <span class="ic">1</span>. C++/Java give −3 and −1. Use <span class="ic">int(-7 / 2)</span> if you want truncation towards zero.</div>
+        <div class="warn"><span class="label"># watch out:</span> <span class="ic">//</span> and <span class="ic">%</span> round towards <em>minus infinity</em>: <span class="ic">-7 // 2</span> is <span class="ic">-4</span> and <span class="ic">-7 % 2</span> is <span class="ic">1</span>. C++/Java give −3 and −1. Use <span class="ic">int(-7 / 2)</span> if you want truncation towards zero.</div>
       </section>
 
       <section id="io" data-group="Core Language" data-title="Input &amp; Output (Fast I/O)" class="card scroll-mt-20">
         <div class="flex items-center gap-3"><span class="sec-num">04</span><h2 class="sec-title">Input &amp; Output (Fast I/O)</h2></div>
         <p class="prose-p">Every coding test starts by reading numbers. <span class="ic">input()</span> reads one line as <em>text</em>; you then cut it up and convert it.</p>
-        <div class="analogy"><span class="label">🍑 Analogy:</span> <span class="ic">input()</span> hands you a whole sentence. <span class="ic">.split()</span> cuts it into words. <span class="ic">map(int, …)</span> turns each word into a number.</div>
+        <div class="analogy"><span class="label"># analogy:</span> <span class="ic">input()</span> hands you a whole sentence. <span class="ic">.split()</span> cuts it into words. <span class="ic">map(int, …)</span> turns each word into a number.</div>
         <div class="code" data-norun><pre><code class="language-python">n = int(input())                        # "5"         -> 5
 a, b = map(int, input().split())        # "3 7"       -> a=3, b=7
 nums = list(map(int, input().split()))  # "1 2 3 4"   -> [1, 2, 3, 4]
@@ -299,16 +325,16 @@ print(f"{255:b} {255:x} {255:o}")             # 11111111 ff 377</code></pre></di
         <div class="flex items-center gap-3"><span class="sec-num">05</span><h2 class="sec-title">Strings</h2></div>
         <p class="prose-p">A string is a row of characters. Strings are <strong>immutable</strong>: you can't change a letter in place, you build a new string instead.</p>
         <div class="diagram">
-          <p class="text-xs font-semibold text-slate-500 mb-3">DIAGRAM · Indexing <span class="ic">s = "PYTHON"</span></p>
+          <p class="text-xs font-semibold text-zinc-400 mb-3">DIAGRAM · Indexing <span class="ic">s = "PYTHON"</span></p>
           <div class="flex gap-2">
-            <div class="text-center"><div class="cell bg-lavender-100 text-lavender-700">P</div><div class="text-xs mt-1 text-mint-700 font-mono">0</div><div class="text-xs text-blush-700 font-mono">-6</div></div>
-            <div class="text-center"><div class="cell bg-mint-100 text-mint-700">Y</div><div class="text-xs mt-1 text-mint-700 font-mono">1</div><div class="text-xs text-blush-700 font-mono">-5</div></div>
-            <div class="text-center"><div class="cell bg-peach-100 text-peach-700">T</div><div class="text-xs mt-1 text-mint-700 font-mono">2</div><div class="text-xs text-blush-700 font-mono">-4</div></div>
-            <div class="text-center"><div class="cell bg-sky2-100 text-sky2-700">H</div><div class="text-xs mt-1 text-mint-700 font-mono">3</div><div class="text-xs text-blush-700 font-mono">-3</div></div>
-            <div class="text-center"><div class="cell bg-blush-100 text-blush-700">O</div><div class="text-xs mt-1 text-mint-700 font-mono">4</div><div class="text-xs text-blush-700 font-mono">-2</div></div>
-            <div class="text-center"><div class="cell bg-butter-100 text-butter-700">N</div><div class="text-xs mt-1 text-mint-700 font-mono">5</div><div class="text-xs text-blush-700 font-mono">-1</div></div>
+            <div class="text-center"><div class="cell bg-term-100 text-term-700">P</div><div class="text-xs mt-1 text-fn-700 font-mono">0</div><div class="text-xs text-err-700 font-mono">-6</div></div>
+            <div class="text-center"><div class="cell bg-fn-100 text-fn-700">Y</div><div class="text-xs mt-1 text-fn-700 font-mono">1</div><div class="text-xs text-err-700 font-mono">-5</div></div>
+            <div class="text-center"><div class="cell bg-str-100 text-str-700">T</div><div class="text-xs mt-1 text-fn-700 font-mono">2</div><div class="text-xs text-err-700 font-mono">-4</div></div>
+            <div class="text-center"><div class="cell bg-kw-100 text-kw-700">H</div><div class="text-xs mt-1 text-fn-700 font-mono">3</div><div class="text-xs text-err-700 font-mono">-3</div></div>
+            <div class="text-center"><div class="cell bg-err-100 text-err-700">O</div><div class="text-xs mt-1 text-fn-700 font-mono">4</div><div class="text-xs text-err-700 font-mono">-2</div></div>
+            <div class="text-center"><div class="cell bg-num-100 text-num-700">N</div><div class="text-xs mt-1 text-fn-700 font-mono">5</div><div class="text-xs text-err-700 font-mono">-1</div></div>
           </div>
-          <p class="text-xs text-slate-500 mt-3">Green numbers count from the front (starting at 0). Pink numbers count from the back. <span class="ic">s[1:4]</span> means “from index 1 up to, but <em>not</em> including, 4” → <span class="ic">"YTH"</span>.</p>
+          <p class="text-xs text-zinc-400 mt-3">Green numbers count from the front (starting at 0). Pink numbers count from the back. <span class="ic">s[1:4]</span> means “from index 1 up to, but <em>not</em> including, 4” → <span class="ic">"YTH"</span>.</p>
         </div>
         <div class="code"><pre><code class="language-python">s = "PYTHON"
 s[0], s[-1]        # 'P', 'N'
@@ -349,13 +375,13 @@ string.digits            # '0123456789'
 print("ab" * 3)          # ababab
 poem = """line one
 line two"""</code></pre></div>
-        <div class="warn"><span class="label">🌸 Watch out:</span> building a big string with <span class="ic">s += piece</span> inside a loop can be slow. Append pieces to a list and <span class="ic">"".join(list)</span> at the end.</div>
+        <div class="warn"><span class="label"># watch out:</span> building a big string with <span class="ic">s += piece</span> inside a loop can be slow. Append pieces to a list and <span class="ic">"".join(list)</span> at the end.</div>
       </section>
 
       <section id="lists" data-group="Core Language" data-title="Lists" class="card scroll-mt-20">
         <div class="flex items-center gap-3"><span class="sec-num">06</span><h2 class="sec-title">Lists</h2></div>
         <p class="prose-p">A list is an ordered, changeable row of items — Python's “array”. Indexing and slicing work exactly like strings.</p>
-        <div class="analogy"><span class="label">🍑 Analogy:</span> A list is a train. Each carriage has a number (its index), and you can add carriages at the end, uncouple some, or reorder them.</div>
+        <div class="analogy"><span class="label"># analogy:</span> A list is a train. Each carriage has a number (its index), and you can add carriages at the end, uncouple some, or reorder them.</div>
         <div class="code"><pre><code class="language-python">nums = [5, 3, 8]
 nums.append(1)        # [5, 3, 8, 1]         add to end      O(1)
 nums.extend([7, 7])   # [5, 3, 8, 1, 7, 7]   add many
@@ -383,25 +409,25 @@ pairs   = [(i, j) for i in range(2) for j in range(2)]   # nested loops
 flat    = [v for row in [[1, 2], [3, 4]] for v in row]    # [1, 2, 3, 4]</code></pre></div>
         <p class="h3">2D grids (and the #1 beginner trap)</p>
         <div class="diagram">
-          <p class="text-xs font-semibold text-slate-500 mb-3">DIAGRAM · <span class="ic">[[0]*3]*3</span> vs a comprehension</p>
+          <p class="text-xs font-semibold text-zinc-400 mb-3">DIAGRAM · <span class="ic">[[0]*3]*3</span> vs a comprehension</p>
           <div class="grid sm:grid-cols-2 gap-6 text-sm">
             <div>
-              <p class="font-semibold text-blush-700 mb-2">❌ <span class="font-mono">[[0]*3]*3</span></p>
+              <p class="font-semibold text-err-700 mb-2">❌ <span class="font-mono">[[0]*3]*3</span></p>
               <div class="flex items-center gap-3 font-mono">
-                <div class="space-y-1"><div class="rounded bg-lavender-100 px-2">row 0</div><div class="rounded bg-lavender-100 px-2">row 1</div><div class="rounded bg-lavender-100 px-2">row 2</div></div>
-                <div class="text-slate-400 leading-tight">─┐<br/>─┼▶<br/>─┘</div>
-                <div class="rounded-lg border-2 border-blush-300 bg-blush-50 px-3 py-2">[0, 0, 0]</div>
+                <div class="space-y-1"><div class="rounded bg-term-100 px-2">row 0</div><div class="rounded bg-term-100 px-2">row 1</div><div class="rounded bg-term-100 px-2">row 2</div></div>
+                <div class="text-zinc-500 leading-tight">─┐<br/>─┼▶<br/>─┘</div>
+                <div class="rounded-lg border-2 border-err-300 bg-err-50 px-3 py-2">[0, 0, 0]</div>
               </div>
-              <p class="text-xs text-slate-500 mt-2">Three tags, <strong>one</strong> list. Change one row and every row changes.</p>
+              <p class="text-xs text-zinc-400 mt-2">Three tags, <strong>one</strong> list. Change one row and every row changes.</p>
             </div>
             <div>
-              <p class="font-semibold text-mint-700 mb-2">✅ <span class="font-mono">[[0]*3 for _ in range(3)]</span></p>
+              <p class="font-semibold text-fn-700 mb-2">✅ <span class="font-mono">[[0]*3 for _ in range(3)]</span></p>
               <div class="flex items-center gap-3 font-mono">
-                <div class="space-y-1"><div class="rounded bg-lavender-100 px-2">row 0</div><div class="rounded bg-lavender-100 px-2">row 1</div><div class="rounded bg-lavender-100 px-2">row 2</div></div>
-                <div class="text-slate-400 leading-tight">──▶<br/>──▶<br/>──▶</div>
-                <div class="space-y-1"><div class="rounded border border-mint-300 bg-mint-50 px-2">[0, 0, 0]</div><div class="rounded border border-mint-300 bg-mint-50 px-2">[0, 0, 0]</div><div class="rounded border border-mint-300 bg-mint-50 px-2">[0, 0, 0]</div></div>
+                <div class="space-y-1"><div class="rounded bg-term-100 px-2">row 0</div><div class="rounded bg-term-100 px-2">row 1</div><div class="rounded bg-term-100 px-2">row 2</div></div>
+                <div class="text-zinc-500 leading-tight">──▶<br/>──▶<br/>──▶</div>
+                <div class="space-y-1"><div class="rounded border border-fn-300 bg-fn-50 px-2">[0, 0, 0]</div><div class="rounded border border-fn-300 bg-fn-50 px-2">[0, 0, 0]</div><div class="rounded border border-fn-300 bg-fn-50 px-2">[0, 0, 0]</div></div>
               </div>
-              <p class="text-xs text-slate-500 mt-2">Three separate lists. Rows are independent.</p>
+              <p class="text-xs text-zinc-400 mt-2">Three separate lists. Rows are independent.</p>
             </div>
           </div>
         </div>
@@ -446,7 +472,7 @@ print((0, 1) in visited)     # True</code></pre></div>
       <section id="dicts" data-group="Core Language" data-title="Dictionaries" class="card scroll-mt-20">
         <div class="flex items-center gap-3"><span class="sec-num">08</span><h2 class="sec-title">Dictionaries</h2></div>
         <p class="prose-p">A dictionary maps <strong>keys</strong> to <strong>values</strong>. Looking up a key is instant (O(1)) no matter how big the dict is.</p>
-        <div class="analogy"><span class="label">🍑 Analogy:</span> A real dictionary: you look up the word (key) and read its meaning (value). You never read the whole book to find one word.</div>
+        <div class="analogy"><span class="label"># analogy:</span> A real dictionary: you look up the word (key) and read its meaning (value). You never read the whole book to find one word.</div>
         <div class="code"><pre><code class="language-python">ages = {"ada": 36, "alan": 41}
 ages["grace"] = 85           # add / update
 print(ages["ada"])           # 36  (KeyError if missing!)
@@ -476,19 +502,19 @@ print(top)                   # [('a', 3), ('n', 2), ('b', 1)]
 
 # Merge two dicts
 merged = {"a": 1} | {"b": 2}           # Python 3.9+</code></pre></div>
-        <div class="tip"><span class="label">🌿 Tip:</span> Since Python 3.7, dicts remember insertion order. Keys must be immutable: numbers, strings, tuples — not lists.</div>
+        <div class="tip"><span class="label"># tip:</span> Since Python 3.7, dicts remember insertion order. Keys must be immutable: numbers, strings, tuples — not lists.</div>
       </section>
 
       <section id="sets" data-group="Core Language" data-title="Sets" class="card scroll-mt-20">
         <div class="flex items-center gap-3"><span class="sec-num">09</span><h2 class="sec-title">Sets</h2></div>
         <p class="prose-p">A set is a bag of <strong>unique</strong> items with instant “is it in here?” checks. Use it to remove duplicates or track what you've already seen.</p>
         <div class="diagram">
-          <p class="text-xs font-semibold text-slate-500 mb-3">DIAGRAM · Set operations on A = {1,2,3} and B = {2,3,4}</p>
+          <p class="text-xs font-semibold text-zinc-400 mb-3">DIAGRAM · Set operations on A = {1,2,3} and B = {2,3,4}</p>
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center text-sm font-mono">
-            <div class="rounded-xl bg-lavender-50 border border-lavender-100 p-3"><div class="font-bold">A | B</div><div class="text-xs text-slate-500">union</div><div class="mt-1">{1,2,3,4}</div></div>
-            <div class="rounded-xl bg-mint-50 border border-mint-100 p-3"><div class="font-bold">A &amp; B</div><div class="text-xs text-slate-500">intersection</div><div class="mt-1">{2,3}</div></div>
-            <div class="rounded-xl bg-peach-50 border border-peach-100 p-3"><div class="font-bold">A - B</div><div class="text-xs text-slate-500">difference</div><div class="mt-1">{1}</div></div>
-            <div class="rounded-xl bg-sky2-50 border border-sky2-100 p-3"><div class="font-bold">A ^ B</div><div class="text-xs text-slate-500">in exactly one</div><div class="mt-1">{1,4}</div></div>
+            <div class="rounded-xl bg-term-50 border border-term-100 p-3"><div class="font-bold">A | B</div><div class="text-xs text-zinc-400">union</div><div class="mt-1">{1,2,3,4}</div></div>
+            <div class="rounded-xl bg-fn-50 border border-fn-100 p-3"><div class="font-bold">A &amp; B</div><div class="text-xs text-zinc-400">intersection</div><div class="mt-1">{2,3}</div></div>
+            <div class="rounded-xl bg-str-50 border border-str-100 p-3"><div class="font-bold">A - B</div><div class="text-xs text-zinc-400">difference</div><div class="mt-1">{1}</div></div>
+            <div class="rounded-xl bg-kw-50 border border-kw-100 p-3"><div class="font-bold">A ^ B</div><div class="text-xs text-zinc-400">in exactly one</div><div class="mt-1">{1,4}</div></div>
           </div>
         </div>
         <div class="code"><pre><code class="language-python">seen = set()                 # NOT {} -- that's an empty dict
@@ -505,7 +531,7 @@ print(A | B, A &amp; B, A - B, A ^ B)
 print({1, 2} &lt;= A)              # subset check: True
 
 frozen = frozenset([1, 2])      # immutable set, can be a dict key</code></pre></div>
-        <div class="warn"><span class="label">🌸 Watch out:</span> <span class="ic">x in my_list</span> scans the whole list (slow, O(n)). <span class="ic">x in my_set</span> is instant. If you check membership inside a loop, convert to a set first.</div>
+        <div class="warn"><span class="label"># watch out:</span> <span class="ic">x in my_list</span> scans the whole list (slow, O(n)). <span class="ic">x in my_set</span> is instant. If you check membership inside a loop, convert to a set first.</div>
       </section>
 
       <section id="control" data-group="Core Language" data-title="Control Flow &amp; Loops" class="card scroll-mt-20">
@@ -555,7 +581,7 @@ match cmd:
         print("removing")
     case _:
         print("unknown")</code></pre></div>
-        <div class="tip"><span class="label">🌿 Tip:</span> <span class="ic">range(a, b)</span> stops <em>before</em> <span class="ic">b</span>. To loop 1..n inclusive, write <span class="ic">range(1, n + 1)</span>.</div>
+        <div class="tip"><span class="label"># tip:</span> <span class="ic">range(a, b)</span> stops <em>before</em> <span class="ic">b</span>. To loop 1..n inclusive, write <span class="ic">range(1, n + 1)</span>.</div>
       </section>
 
       <section id="functions" data-group="Core Language" data-title="Functions, Lambdas &amp; Recursion" class="card scroll-mt-20">
@@ -602,7 +628,7 @@ def factorial(n):
     return n * factorial(n - 1)
 
 print(factorial(5))            # 120</code></pre></div>
-        <div class="warn"><span class="label">🌸 Watch out:</span> never use a mutable default like <span class="ic">def f(items=[])</span>. The same list is reused on every call. Use <span class="ic">items=None</span> and create the list inside. Very deep recursion (10⁵+ levels) can still crash Python itself; convert it to a loop with your own stack if that happens.</div>
+        <div class="warn"><span class="label"># watch out:</span> never use a mutable default like <span class="ic">def f(items=[])</span>. The same list is reused on every call. Use <span class="ic">items=None</span> and create the list inside. Very deep recursion (10⁵+ levels) can still crash Python itself; convert it to a loop with your own stack if that happens.</div>
       </section>
 
       <!-- ===================== POWER TOOLS ===================== -->
@@ -637,7 +663,7 @@ isinstance(5, int)                     # True
 int("ff", 16), int("101", 2)           # 255 5   (parse other bases)
 bin(5), hex(255), oct(8)               # '0b101' '0xff' '0o10'
 float("inf"), -float("inf")            # infinities, great as starting min/max</code></pre></div>
-        <div class="warn"><span class="label">🌸 Watch out:</span> <span class="ic">round()</span> uses “banker's rounding” — <span class="ic">round(2.5)</span> is <span class="ic">2</span>, <span class="ic">round(3.5)</span> is <span class="ic">4</span>. For classic rounding of positives use <span class="ic">int(x + 0.5)</span>.</div>
+        <div class="warn"><span class="label"># watch out:</span> <span class="ic">round()</span> uses “banker's rounding” — <span class="ic">round(2.5)</span> is <span class="ic">2</span>, <span class="ic">round(3.5)</span> is <span class="ic">4</span>. For classic rounding of positives use <span class="ic">int(x + 0.5)</span>.</div>
       </section>
 
       <section id="sorting" data-group="Power Tools" data-title="Sorting Like a Pro" class="card scroll-mt-20">
@@ -665,7 +691,7 @@ print("".join(sorted(nums, key=cmp_to_key(compare))))   # 9534330 (largest numbe
 # Indices that would sort a list
 vals = [30, 10, 20]
 order = sorted(range(len(vals)), key=lambda i: vals[i])  # [1, 2, 0]</code></pre></div>
-        <div class="tip"><span class="label">🌿 Tip:</span> Negating a number in the key (<span class="ic">-p[1]</span>) is the easy way to mix ascending and descending in one sort.</div>
+        <div class="tip"><span class="label"># tip:</span> Negating a number in the key (<span class="ic">-p[1]</span>) is the easy way to mix ascending and descending in one sort.</div>
       </section>
 
       <section id="collections" data-group="Power Tools" data-title="collections: Counter, defaultdict, deque" class="card scroll-mt-20">
@@ -695,13 +721,13 @@ for w in "a b a".split():
 groups = defaultdict(set)    # missing key -&gt; starts as set()</code></pre></div>
         <p class="h3">deque — a list that's fast at both ends</p>
         <div class="diagram">
-          <p class="text-xs font-semibold text-slate-500 mb-3">DIAGRAM · Double-ended queue</p>
+          <p class="text-xs font-semibold text-zinc-400 mb-3">DIAGRAM · Double-ended queue</p>
           <div class="flex items-center gap-2 font-mono text-xs sm:text-sm">
-            <div class="text-center text-lavender-700">appendleft<br/>popleft<br/>⇄</div>
-            <div class="flex gap-1"><div class="cell bg-lavender-100">1</div><div class="cell bg-lavender-100">2</div><div class="cell bg-lavender-100">3</div><div class="cell bg-lavender-100">4</div></div>
-            <div class="text-center text-mint-700">append<br/>pop<br/>⇄</div>
+            <div class="text-center text-term-700">appendleft<br/>popleft<br/>⇄</div>
+            <div class="flex gap-1"><div class="cell bg-term-100">1</div><div class="cell bg-term-100">2</div><div class="cell bg-term-100">3</div><div class="cell bg-term-100">4</div></div>
+            <div class="text-center text-fn-700">append<br/>pop<br/>⇄</div>
           </div>
-          <p class="text-xs text-slate-500 mt-3">All four operations are O(1). A plain list's <span class="ic">pop(0)</span> is O(n) because every item has to shuffle left. Use a deque for queues (e.g. BFS).</p>
+          <p class="text-xs text-zinc-400 mt-3">All four operations are O(1). A plain list's <span class="ic">pop(0)</span> is O(n) because every item has to shuffle left. Use a deque for queues (e.g. BFS).</p>
         </div>
         <div class="code"><pre><code class="language-python">from collections import deque
 q = deque([1, 2, 3])
@@ -736,15 +762,15 @@ print(p.x, p.y, p)             # 3 4 Point(x=3, y=4)</code></pre></div>
       <section id="heapq" data-group="Power Tools" data-title="heapq: Priority Queues" class="card scroll-mt-20">
         <div class="flex items-center gap-3"><span class="sec-num">15</span><h2 class="sec-title">heapq: Priority Queues</h2></div>
         <p class="prose-p">A heap always gives you the <strong>smallest</strong> item fast, even while you keep adding new ones. It's stored in a normal list.</p>
-        <div class="analogy"><span class="label">🍑 Analogy:</span> A hospital waiting room: whoever is most urgent (smallest number) is seen next, no matter when they arrived.</div>
+        <div class="analogy"><span class="label"># analogy:</span> A hospital waiting room: whoever is most urgent (smallest number) is seen next, no matter when they arrived.</div>
         <div class="diagram">
-          <p class="text-xs font-semibold text-slate-500 mb-3">DIAGRAM · The list <span class="ic">[1, 3, 2, 7, 4]</span> as a min-heap tree</p>
+          <p class="text-xs font-semibold text-zinc-400 mb-3">DIAGRAM · The list <span class="ic">[1, 3, 2, 7, 4]</span> as a min-heap tree</p>
           <div class="flex flex-col items-center gap-2 font-mono text-sm">
-            <div class="cell bg-mint-100 text-mint-700 ring-2 ring-mint-300">1</div>
-            <div class="flex gap-16"><div class="cell bg-lavender-100">3</div><div class="cell bg-lavender-100">2</div></div>
-            <div class="flex gap-4 -ml-20"><div class="cell bg-peach-100">7</div><div class="cell bg-peach-100">4</div></div>
+            <div class="cell bg-fn-100 text-fn-700 ring-2 ring-fn-300">1</div>
+            <div class="flex gap-16"><div class="cell bg-term-100">3</div><div class="cell bg-term-100">2</div></div>
+            <div class="flex gap-4 -ml-20"><div class="cell bg-str-100">7</div><div class="cell bg-str-100">4</div></div>
           </div>
-          <p class="text-xs text-slate-500 mt-3">Every parent is ≤ its children, so the smallest is always at index 0. Children of index <span class="ic">i</span> live at <span class="ic">2i+1</span> and <span class="ic">2i+2</span>. Push and pop are O(log n).</p>
+          <p class="text-xs text-zinc-400 mt-3">Every parent is ≤ its children, so the smallest is always at index 0. Children of index <span class="ic">i</span> live at <span class="ic">2i+1</span> and <span class="ic">2i+2</span>. Push and pop are O(log n).</p>
         </div>
         <div class="code"><pre><code class="language-python">import heapq
 h = []
@@ -777,16 +803,16 @@ print(heapq.nsmallest(2, [4, 1, 9, 7]))   # [1, 4]</code></pre></div>
         <div class="flex items-center gap-3"><span class="sec-num">16</span><h2 class="sec-title">bisect: Binary Search</h2></div>
         <p class="prose-p">On a <strong>sorted</strong> list, <span class="ic">bisect</span> finds where a value would go in O(log n) — like opening a phone book in the middle instead of reading every page.</p>
         <div class="diagram">
-          <p class="text-xs font-semibold text-slate-500 mb-3">DIAGRAM · Where does 3 go in <span class="ic">[1, 3, 3, 5]</span>?</p>
+          <p class="text-xs font-semibold text-zinc-400 mb-3">DIAGRAM · Where does 3 go in <span class="ic">[1, 3, 3, 5]</span>?</p>
           <div class="flex items-end gap-1 font-mono text-sm">
-            <div class="text-center"><div class="cell bg-lavender-100">1</div><div class="text-xs mt-1">0</div></div>
-            <div class="text-blush-700 text-xs font-bold self-start">▼left=1</div>
-            <div class="text-center"><div class="cell bg-mint-100">3</div><div class="text-xs mt-1">1</div></div>
-            <div class="text-center"><div class="cell bg-mint-100">3</div><div class="text-xs mt-1">2</div></div>
-            <div class="text-sky2-700 text-xs font-bold self-start">▼right=3</div>
-            <div class="text-center"><div class="cell bg-lavender-100">5</div><div class="text-xs mt-1">3</div></div>
+            <div class="text-center"><div class="cell bg-term-100">1</div><div class="text-xs mt-1">0</div></div>
+            <div class="text-err-700 text-xs font-bold self-start">▼left=1</div>
+            <div class="text-center"><div class="cell bg-fn-100">3</div><div class="text-xs mt-1">1</div></div>
+            <div class="text-center"><div class="cell bg-fn-100">3</div><div class="text-xs mt-1">2</div></div>
+            <div class="text-kw-700 text-xs font-bold self-start">▼right=3</div>
+            <div class="text-center"><div class="cell bg-term-100">5</div><div class="text-xs mt-1">3</div></div>
           </div>
-          <p class="text-xs text-slate-500 mt-3"><span class="ic">bisect_left</span> = before existing 3s; <span class="ic">bisect_right</span> = after them. Their difference is how many 3s there are.</p>
+          <p class="text-xs text-zinc-400 mt-3"><span class="ic">bisect_left</span> = before existing 3s; <span class="ic">bisect_right</span> = after them. Their difference is how many 3s there are.</p>
         </div>
         <div class="code"><pre><code class="language-python">from bisect import bisect_left, bisect_right, insort
 a = [1, 3, 3, 5]
@@ -835,7 +861,7 @@ a = [3, 1, 4, 1, 5]
 pre = list(accumulate(a, initial=0))   # [0, 3, 4, 8, 9, 14]
 l, r = 1, 3                            # sum of a[1..3] inclusive
 print(pre[r + 1] - pre[l])             # 6  (1 + 4 + 1)</code></pre></div>
-        <div class="warn"><span class="label">🌸 Watch out:</span> these grow fast. 10 items have 3,628,800 permutations. Fine for n ≤ 8–10, too slow beyond that.</div>
+        <div class="warn"><span class="label"># watch out:</span> these grow fast. 10 items have 3,628,800 permutations. Fine for n ≤ 8–10, too slow beyond that.</div>
       </section>
 
       <section id="mathtools" data-group="Power Tools" data-title="math &amp; functools" class="card scroll-mt-20">
@@ -861,7 +887,7 @@ MOD = 10**9 + 7                    # the classic contest modulus
 print(pow(3, 10**18, MOD))         # fast modular exponentiation
 print(pow(3, -1, MOD))             # modular inverse (3.8+)</code></pre></div>
         <p class="h3">functools — memoisation in one line</p>
-        <div class="analogy"><span class="label">🍑 Analogy:</span> <span class="ic">@cache</span> is a sticky note on the function: “I've solved this exact input before, here's the answer”. It turns slow recursive solutions into fast ones (dynamic programming).</div>
+        <div class="analogy"><span class="label"># analogy:</span> <span class="ic">@cache</span> is a sticky note on the function: “I've solved this exact input before, here's the answer”. It turns slow recursive solutions into fast ones (dynamic programming).</div>
         <div class="code"><pre><code class="language-python">import math
 from functools import cache, lru_cache, reduce
 
@@ -880,21 +906,21 @@ ways.cache_clear()                 # reset between test cases if needed
 
 print(reduce(lambda acc, x: acc * x, [1, 2, 3, 4]))   # 24  fold a list into one value
 print(reduce(math.gcd, [12, 18, 24]))                 # 6   gcd of many numbers</code></pre></div>
-        <div class="warn"><span class="label">🌸 Watch out:</span> cached function arguments must be hashable — pass tuples, not lists.</div>
+        <div class="warn"><span class="label"># watch out:</span> cached function arguments must be hashable — pass tuples, not lists.</div>
       </section>
 
       <section id="bits" data-group="Power Tools" data-title="Bit Manipulation" class="card scroll-mt-20">
         <div class="flex items-center gap-3"><span class="sec-num">19</span><h2 class="sec-title">Bit Manipulation</h2></div>
         <p class="prose-p">Numbers are stored as 0s and 1s. Bit tricks let you treat one integer as a row of on/off switches.</p>
         <div class="diagram">
-          <p class="text-xs font-semibold text-slate-500 mb-3">DIAGRAM · 13 in binary</p>
+          <p class="text-xs font-semibold text-zinc-400 mb-3">DIAGRAM · 13 in binary</p>
           <div class="flex gap-1 font-mono text-sm">
-            <div class="text-center"><div class="cell bg-mint-100 text-mint-700">1</div><div class="text-xs mt-1">8</div></div>
-            <div class="text-center"><div class="cell bg-mint-100 text-mint-700">1</div><div class="text-xs mt-1">4</div></div>
-            <div class="text-center"><div class="cell bg-slate-100 text-slate-400">0</div><div class="text-xs mt-1">2</div></div>
-            <div class="text-center"><div class="cell bg-mint-100 text-mint-700">1</div><div class="text-xs mt-1">1</div></div>
+            <div class="text-center"><div class="cell bg-fn-100 text-fn-700">1</div><div class="text-xs mt-1">8</div></div>
+            <div class="text-center"><div class="cell bg-fn-100 text-fn-700">1</div><div class="text-xs mt-1">4</div></div>
+            <div class="text-center"><div class="cell bg-zinc-800 text-zinc-500">0</div><div class="text-xs mt-1">2</div></div>
+            <div class="text-center"><div class="cell bg-fn-100 text-fn-700">1</div><div class="text-xs mt-1">1</div></div>
           </div>
-          <p class="text-xs text-slate-500 mt-3">8 + 4 + 1 = 13 → <span class="ic">0b1101</span>. Bit <span class="ic">i</span> is worth 2ⁱ, counting from the right starting at 0.</p>
+          <p class="text-xs text-zinc-400 mt-3">8 + 4 + 1 = 13 → <span class="ic">0b1101</span>. Bit <span class="ic">i</span> is worth 2ⁱ, counting from the right starting at 0.</p>
         </div>
         <div class="code"><pre><code class="language-python">a, b = 0b1100, 0b1010     # 12, 10
 a &amp; b, a | b, a ^ b       # 8 14 6     AND, OR, XOR
@@ -949,7 +975,7 @@ print(1_000_000 + 1)                    # underscores make big literals readable
 
 import sys
 sys.set_int_max_str_digits(0)           # lift the 4300-digit str(int) limit (3.11+)</code></pre></div>
-        <div class="tip"><span class="label">🌿 Tip:</span> When a problem says “print the answer modulo 10⁹+7”, take <span class="ic">% MOD</span> after every multiplication. Python won't overflow, but huge numbers get slow.</div>
+        <div class="tip"><span class="label"># tip:</span> When a problem says “print the answer modulo 10⁹+7”, take <span class="ic">% MOD</span> after every multiplication. Python won't overflow, but huge numbers get slow.</div>
       </section>
 
       <section id="classes" data-group="Power Tools" data-title="Classes &amp; Dataclasses" class="card scroll-mt-20">
@@ -1045,14 +1071,14 @@ print("debug info", file=sys.stderr)   # judges ignore stderr: safe for debug pr
       <section id="files" data-group="Files &amp; Web" data-title="Reading &amp; Writing Files" class="card scroll-mt-20">
         <div class="flex items-center gap-3"><span class="sec-num">23</span><h2 class="sec-title">Reading &amp; Writing Files</h2></div>
         <p class="prose-p">Your program can save data to disk and load it back later. You <em>open</em> a file in a <em>mode</em>, use it, and <em>close</em> it.</p>
-        <div class="analogy"><span class="label">🍑 Analogy:</span> Opening a file is like borrowing a library book. <span class="ic">with</span> is the librarian who makes sure it's returned (closed) even if you trip over something halfway.</div>
+        <div class="analogy"><span class="label"># analogy:</span> Opening a file is like borrowing a library book. <span class="ic">with</span> is the librarian who makes sure it's returned (closed) even if you trip over something halfway.</div>
         <div class="diagram">
-          <p class="text-xs font-semibold text-slate-500 mb-3">DIAGRAM · The life of a file</p>
+          <p class="text-xs font-semibold text-zinc-400 mb-3">DIAGRAM · The life of a file</p>
           <div class="flex flex-wrap items-center gap-2 text-sm font-semibold">
-            <span class="rounded-xl bg-lavender-100 text-lavender-700 px-3 py-2">open(path, mode)</span><span class="text-slate-400">→</span>
-            <span class="rounded-xl bg-mint-100 text-mint-700 px-3 py-2">read() / write()</span><span class="text-slate-400">→</span>
-            <span class="rounded-xl bg-peach-100 text-peach-700 px-3 py-2">close()</span>
-            <span class="text-xs text-slate-500 font-normal ml-2">(<span class="ic">with</span> does the close for you)</span>
+            <span class="rounded-xl bg-term-100 text-term-700 px-3 py-2">open(path, mode)</span><span class="text-zinc-500">→</span>
+            <span class="rounded-xl bg-fn-100 text-fn-700 px-3 py-2">read() / write()</span><span class="text-zinc-500">→</span>
+            <span class="rounded-xl bg-str-100 text-str-700 px-3 py-2">close()</span>
+            <span class="text-xs text-zinc-400 font-normal ml-2">(<span class="ic">with</span> does the close for you)</span>
           </div>
         </div>
         <div class="tbl-wrap"><table class="tbl">
@@ -1148,20 +1174,20 @@ with open("output/report.txt", "rb") as src, open("output/copy.bin", "wb") as ds
 for name in ["notes.txt", "scores.csv", "people.csv", "data.json"]:
     os.remove(name)
 shutil.rmtree("output")               # delete a folder and everything in it</code></pre></div>
-        <div class="warn"><span class="label">🌸 Watch out:</span> <span class="ic">"w"</span> wipes the file the instant it opens. Always pass <span class="ic">encoding="utf-8"</span> so text with accents or emoji behaves the same on Windows, macOS and Linux.</div>
+        <div class="warn"><span class="label"># watch out:</span> <span class="ic">"w"</span> wipes the file the instant it opens. Always pass <span class="ic">encoding="utf-8"</span> so text with accents or emoji behaves the same on Windows, macOS and Linux.</div>
       </section>
 
       <section id="scraping" data-group="Files &amp; Web" data-title="Web Scraping" class="card scroll-mt-20">
         <div class="flex items-center gap-3"><span class="sec-num">24</span><h2 class="sec-title">Web Scraping</h2></div>
         <p class="prose-p">Scraping means downloading a web page with code and pulling out the parts you care about — prices, headlines, tables — instead of copying them by hand.</p>
-        <div class="analogy"><span class="label">🍑 Analogy:</span> <span class="ic">requests</span> is the delivery driver who fetches the page. <span class="ic">BeautifulSoup</span> is the highlighter you use to find the sentences you want in it.</div>
+        <div class="analogy"><span class="label"># analogy:</span> <span class="ic">requests</span> is the delivery driver who fetches the page. <span class="ic">BeautifulSoup</span> is the highlighter you use to find the sentences you want in it.</div>
         <div class="diagram">
-          <p class="text-xs font-semibold text-slate-500 mb-3">DIAGRAM · The scraping pipeline</p>
+          <p class="text-xs font-semibold text-zinc-400 mb-3">DIAGRAM · The scraping pipeline</p>
           <div class="grid grid-cols-1 sm:grid-cols-4 gap-2 text-sm text-center">
-            <div class="rounded-xl bg-lavender-100 text-lavender-700 p-3"><div class="font-bold">1. Request</div><div class="text-xs mt-1">requests.get(url)</div></div>
-            <div class="rounded-xl bg-sky2-100 text-sky2-700 p-3"><div class="font-bold">2. HTML</div><div class="text-xs mt-1">resp.text</div></div>
-            <div class="rounded-xl bg-mint-100 text-mint-700 p-3"><div class="font-bold">3. Parse</div><div class="text-xs mt-1">BeautifulSoup(html)</div></div>
-            <div class="rounded-xl bg-peach-100 text-peach-700 p-3"><div class="font-bold">4. Save</div><div class="text-xs mt-1">CSV / JSON file</div></div>
+            <div class="rounded-xl bg-term-100 text-term-700 p-3"><div class="font-bold">1. Request</div><div class="text-xs mt-1">requests.get(url)</div></div>
+            <div class="rounded-xl bg-kw-100 text-kw-700 p-3"><div class="font-bold">2. HTML</div><div class="text-xs mt-1">resp.text</div></div>
+            <div class="rounded-xl bg-fn-100 text-fn-700 p-3"><div class="font-bold">3. Parse</div><div class="text-xs mt-1">BeautifulSoup(html)</div></div>
+            <div class="rounded-xl bg-str-100 text-str-700 p-3"><div class="font-bold">4. Save</div><div class="text-xs mt-1">CSV / JSON file</div></div>
           </div>
         </div>
         <div class="code" data-norun><pre><code class="language-bash">pip install requests beautifulsoup4</code></pre></div>
@@ -1190,7 +1216,7 @@ for card in soup.select("div.product"):      # CSS selectors
     link = card.find("a")["href"]            # read an attribute
     print(title, price, link)</code></pre></div>
         <p class="h3">Step 3 — fetch a real page and save the results</p>
-        <p class="prose-p mt-0"><a class="text-lavender-700 underline" href="https://quotes.toscrape.com" target="_blank" rel="noopener">quotes.toscrape.com</a> is a site built specifically for scraping practice.</p>
+        <p class="prose-p mt-0"><a class="text-term-700 underline" href="https://quotes.toscrape.com" target="_blank" rel="noopener">quotes.toscrape.com</a> is a site built specifically for scraping practice.</p>
         <div class="code" data-norun><pre><code class="language-python">import csv
 import time
 import requests
@@ -1247,7 +1273,7 @@ print(tables[0].head())
 from urllib.request import urlopen
 html = urlopen("https://quotes.toscrape.com/").read().decode("utf-8")
 print(html[:100])</code></pre></div>
-        <div class="warn"><span class="label">🌸 Scrape responsibly:</span>
+        <div class="warn"><span class="label"># scrape responsibly:</span>
           <ul class="list-disc pl-5 mt-1 space-y-1">
             <li>Check <span class="ic">https://site.com/robots.txt</span> and the site's terms of service. Prefer an official API if one exists.</li>
             <li>Slow down (<span class="ic">time.sleep</span>) and identify yourself in the User-Agent. Don't hammer servers.</li>
@@ -1263,9 +1289,9 @@ print(html[:100])</code></pre></div>
         <div class="flex items-center gap-3"><span class="sec-num">25</span><h2 class="sec-title">Speed Tips &amp; Pitfalls</h2></div>
         <p class="prose-p">Python is slower than C++, so a few habits matter when time limits are tight. A rough budget: Python does about <strong>10⁷ simple operations per second</strong>.</p>
         <div class="grid sm:grid-cols-2 gap-4 mt-6 text-sm">
-          <div class="rounded-2xl bg-mint-50 border border-mint-100 p-4">
-            <p class="font-bold text-mint-700">✅ Do</p>
-            <ul class="mt-2 text-slate-600 space-y-1 list-disc pl-5">
+          <div class="rounded-2xl bg-fn-50 border border-fn-100 p-4">
+            <p class="font-bold text-fn-700">✅ Do</p>
+            <ul class="mt-2 text-zinc-300 space-y-1 list-disc pl-5">
               <li>Read input with <span class="ic">sys.stdin</span>; print once with <span class="ic">join</span>.</li>
               <li>Put your code in a <span class="ic">main()</span> function: local variables are faster than globals.</li>
               <li>Use sets/dicts for lookups, deque for queues, heapq for “smallest next”.</li>
@@ -1274,9 +1300,9 @@ print(html[:100])</code></pre></div>
               <li>If available, submit with <strong>PyPy</strong>: often 5–10× faster for loops.</li>
             </ul>
           </div>
-          <div class="rounded-2xl bg-blush-50 border border-blush-100 p-4">
-            <p class="font-bold text-blush-700">❌ Avoid</p>
-            <ul class="mt-2 text-slate-600 space-y-1 list-disc pl-5">
+          <div class="rounded-2xl bg-err-50 border border-err-100 p-4">
+            <p class="font-bold text-err-700">❌ Avoid</p>
+            <ul class="mt-2 text-zinc-300 space-y-1 list-disc pl-5">
               <li><span class="ic">list.pop(0)</span> or <span class="ic">list.insert(0, x)</span> in loops.</li>
               <li><span class="ic">x in big_list</span> inside a loop.</li>
               <li><span class="ic">[[0]*m]*n</span> for grids.</li>
@@ -1357,63 +1383,63 @@ if __name__ == "__main__":
         <div class="flex items-center gap-3"><span class="sec-num">27</span><h2 class="sec-title">One-Page Cheat Sheet</h2></div>
         <p class="prose-p">Everything above, compressed. Screenshot it, print it, revise it the night before.</p>
         <div class="grid md:grid-cols-2 gap-4 mt-6 text-sm">
-          <div class="rounded-2xl bg-lavender-50 border border-lavender-100 p-4">
+          <div class="rounded-2xl bg-term-50 border border-term-100 p-4">
             <p class="font-bold mb-2">I/O</p>
-            <pre class="font-mono text-xs whitespace-pre-wrap text-slate-700">n = int(input())
+            <pre class="font-mono text-xs whitespace-pre-wrap text-zinc-200">n = int(input())
 a = list(map(int, input().split()))
 input = sys.stdin.readline
 print(*a) · print("\n".join(out))
 f"{x:.6f}"</pre>
           </div>
-          <div class="rounded-2xl bg-mint-50 border border-mint-100 p-4">
+          <div class="rounded-2xl bg-fn-50 border border-fn-100 p-4">
             <p class="font-bold mb-2">Strings</p>
-            <pre class="font-mono text-xs whitespace-pre-wrap text-slate-700">s[::-1] · s.split() · "".join(l)
+            <pre class="font-mono text-xs whitespace-pre-wrap text-zinc-200">s[::-1] · s.split() · "".join(l)
 ord(c) - ord("a") · chr(97)
 s.count(x) · s.find(x) · s.replace(a, b)
 s.isdigit() · s.isalpha() · s.lower()</pre>
           </div>
-          <div class="rounded-2xl bg-peach-50 border border-peach-100 p-4">
+          <div class="rounded-2xl bg-str-50 border border-str-100 p-4">
             <p class="font-bold mb-2">Lists &amp; sorting</p>
-            <pre class="font-mono text-xs whitespace-pre-wrap text-slate-700">[[0]*m for _ in range(n)]
+            <pre class="font-mono text-xs whitespace-pre-wrap text-zinc-200">[[0]*m for _ in range(n)]
 sorted(a, key=lambda x: (-x[1], x[0]))
 enumerate(a) · zip(a, b) · zip(*grid)
 accumulate(a, initial=0)  # prefix sums</pre>
           </div>
-          <div class="rounded-2xl bg-sky2-50 border border-sky2-100 p-4">
+          <div class="rounded-2xl bg-kw-50 border border-kw-100 p-4">
             <p class="font-bold mb-2">Containers</p>
-            <pre class="font-mono text-xs whitespace-pre-wrap text-slate-700">Counter(a).most_common(k)
+            <pre class="font-mono text-xs whitespace-pre-wrap text-zinc-200">Counter(a).most_common(k)
 defaultdict(list) · deque().popleft()
 heappush(h, x) · heappop(h) · -x for max
 bisect_left(a, x) · insort(a, x)</pre>
           </div>
-          <div class="rounded-2xl bg-blush-50 border border-blush-100 p-4">
+          <div class="rounded-2xl bg-err-50 border border-err-100 p-4">
             <p class="font-bold mb-2">Maths &amp; bits</p>
-            <pre class="font-mono text-xs whitespace-pre-wrap text-slate-700">gcd lcm isqrt comb factorial
+            <pre class="font-mono text-xs whitespace-pre-wrap text-zinc-200">gcd lcm isqrt comb factorial
 pow(b, e, MOD) · pow(x, -1, MOD)
 (a + b - 1) // b   # ceil div
 x &gt;&gt; i &amp; 1 · x.bit_count() · 1 &lt;&lt; n</pre>
           </div>
-          <div class="rounded-2xl bg-butter-100 border border-butter-300/50 p-4">
+          <div class="rounded-2xl bg-num-100 border border-num-300/50 p-4">
             <p class="font-bold mb-2">Files &amp; web</p>
-            <pre class="font-mono text-xs whitespace-pre-wrap text-slate-700">with open(p, "r"|"w"|"a", encoding="utf-8") as f:
+            <pre class="font-mono text-xs whitespace-pre-wrap text-zinc-200">with open(p, "r"|"w"|"a", encoding="utf-8") as f:
 csv.reader / csv.DictWriter
 json.load(f) · json.dump(d, f, indent=2)
 requests.get(url, timeout=10)
 BeautifulSoup(html, "html.parser").select(css)</pre>
           </div>
         </div>
-        <div class="tip"><span class="label">🌿 Next steps:</span> You now have the tools. Practise turning ideas into code on sites like LeetCode, Codeforces, HackerRank or AtCoder — start with “easy” problems and focus on writing clean Python quickly.</div>
+        <div class="tip"><span class="label"># next steps:</span> You now have the tools. Practise turning ideas into code on sites like LeetCode, Codeforces, HackerRank or AtCoder — start with “easy” problems and focus on writing clean Python quickly.</div>
       </section>
 
-      <footer class="text-center text-sm text-slate-500 py-8">
-        Made with 💜 for beginners · <a href="#top" class="text-lavender-700 underline">Back to top</a>
+      <footer class="text-center text-sm text-zinc-400 py-8">
+        <span class="font-mono">print("made for beginners")</span> · <a href="#top" class="text-term-700 underline">Back to top</a>
       </footer>
     </main>
   </div>
 
   <!-- Back to top -->
   <a href="#top" id="to-top" aria-label="Back to top"
-    class="fixed bottom-5 right-5 z-30 w-11 h-11 rounded-2xl bg-white border border-lavender-100 shadow-lg flex items-center justify-center text-lavender-700 opacity-0 pointer-events-none transition-opacity">
+    class="fixed bottom-5 right-5 z-30 w-11 h-11 rounded-2xl bg-panel border border-term-100 shadow-lg flex items-center justify-center text-term-700 opacity-0 pointer-events-none transition-opacity">
     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
   </a>
 
